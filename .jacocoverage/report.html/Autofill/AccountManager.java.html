@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AccountManager.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Autofill&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">Autofill</a> &gt; <span class="el_source">AccountManager.java</span></div><h1>AccountManager.java</h1><pre class="source lang-java linenums">package Autofill;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public class AccountManager {
+    
+    private static AccountManager instance;
+    private static final String DBURL = &quot;jdbc:mysql://127.0.0.1:3307/Autofill&quot;;
+    private static final String DBUsername = &quot;root&quot;;
+    private static final String DBPassword = &quot;admin&quot;;
+    
+    public static AccountManager getInstance() {
+<span class="fc bfc" id="L18" title="All 2 branches covered.">        if (instance == null) {</span>
+<span class="fc" id="L19">            instance = new AccountManager();</span>
+        }
+<span class="fc" id="L21">        return instance;</span>
+    }
+    
+<span class="fc" id="L24">    private AccountManager() {</span>
+        
+<span class="fc" id="L26">    }</span>
+    
+    public User authenticate(String username, String password) throws SQLException {
+<span class="fc" id="L29">        User user = null;</span>
+<span class="fc" id="L30">        Connection con = null;</span>
+<span class="fc" id="L31">        PreparedStatement pstmt = null;</span>
+<span class="fc" id="L32">        ResultSet rs = null;</span>
+        
+        try {
+<span class="fc" id="L35">            con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);</span>
+<span class="fc" id="L36">            pstmt = con.prepareStatement(</span>
+                &quot;SELECT role, data, fieldGroup FROM User WHERE username = ? AND password = ?&quot;
+            );
+<span class="fc" id="L39">            pstmt.setString(1, username);</span>
+<span class="fc" id="L40">            pstmt.setString(2, password);</span>
+<span class="fc" id="L41">            rs = pstmt.executeQuery();</span>
+            
+<span class="fc bfc" id="L43" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L44">                user = new User();</span>
+<span class="fc" id="L45">                user.setUsername(username);</span>
+<span class="fc" id="L46">                user.setRole(rs.getString(&quot;role&quot;));</span>
+<span class="fc" id="L47">                user.setData(rs.getString(&quot;data&quot;));</span>
+<span class="fc" id="L48">                user.setGroup(rs.getString(&quot;fieldGroup&quot;));</span>
+            }
+
+<span class="nc" id="L51">        } catch (SQLException e) {</span>
+<span class="nc" id="L52">            throw e;</span>
+        } finally {
+<span class="nc" id="L54">            try {</span>
+<span class="pc bpc" id="L55" title="3 of 4 branches missed.">                if (rs != null) {rs.close();}</span>
+<span class="pc bpc" id="L56" title="3 of 4 branches missed.">                if (pstmt != null) {pstmt.close();}</span>
+<span class="pc bpc" id="L57" title="3 of 4 branches missed.">                if (con != null) {con.close();}</span>
+<span class="nc" id="L58">            } catch (SQLException e) {</span>
+<span class="nc" id="L59">                throw e;</span>
+<span class="pc" id="L60">            }</span>
+        }
+        
+<span class="fc" id="L63">        return user;</span>
+    }
+    
+    // User registration
+    // Return true if success, otherwise return false
+    public Boolean register(String username, String password) throws SQLException {
+<span class="fc" id="L69">        Boolean successful = false;</span>
+<span class="fc" id="L70">        Connection con = null;</span>
+<span class="fc" id="L71">        PreparedStatement pstmt = null;</span>
+<span class="fc" id="L72">        ResultSet rs = null;</span>
+        
+        try {
+<span class="pc bpc" id="L75" title="1 of 4 branches missed.">            if (!username.equals(&quot;&quot;) &amp;&amp; !password.equals(&quot;&quot;)) {</span>
+<span class="fc" id="L76">                con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);</span>
+<span class="fc" id="L77">                pstmt = con.prepareStatement(</span>
+                    &quot;INSERT INTO User (username, password, role, data, fieldGroup) VALUES (?, ?, ?, ?, ?)&quot;
+                );
+<span class="fc" id="L80">                pstmt.setString(1, username);</span>
+<span class="fc" id="L81">                pstmt.setString(2, password);</span>
+<span class="fc" id="L82">                pstmt.setString(3, &quot;member&quot;);</span>
+<span class="fc" id="L83">                pstmt.setString(4, &quot;[]&quot;);</span>
+<span class="fc" id="L84">                pstmt.setString(5, &quot;[]&quot;);</span>
+<span class="fc" id="L85">                pstmt.executeUpdate();</span>
+
+<span class="fc" id="L87">                successful = true;</span>
+            }
+<span class="fc" id="L89">        } catch (SQLException e) {</span>
+<span class="fc" id="L90">            throw e;</span>
+        } finally {
+<span class="fc" id="L92">            try {</span>
+<span class="pc bpc" id="L93" title="2 of 4 branches missed.">                if (rs != null) {rs.close();}</span>
+<span class="fc bfc" id="L94" title="All 4 branches covered.">                if (pstmt != null) {pstmt.close();}</span>
+<span class="fc bfc" id="L95" title="All 4 branches covered.">                if (con != null) {con.close();}</span>
+<span class="nc" id="L96">            } catch (SQLException e) {</span>
+<span class="pc" id="L97">                throw e;</span>
+<span class="fc" id="L98">            }</span>
+        }
+        
+<span class="fc" id="L101">        return successful;</span>
+    }
+    
+    public boolean deleteAccount(String username) throws SQLException {
+<span class="fc" id="L105">        Boolean successful = false;</span>
+<span class="fc" id="L106">        Connection con = null;</span>
+<span class="fc" id="L107">        PreparedStatement pstmt = null;</span>
+<span class="fc" id="L108">        ResultSet rs = null;</span>
+        
+        try {
+<span class="fc" id="L111">            con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);</span>
+<span class="fc" id="L112">            pstmt = con.prepareStatement(</span>
+                &quot;DELETE FROM User WHERE username = ?&quot;
+            );
+<span class="fc" id="L115">            pstmt.setString(1, username);</span>
+<span class="fc" id="L116">            pstmt.executeUpdate();</span>
+<span class="fc" id="L117">            successful = true;</span>
+<span class="nc" id="L118">        } catch (SQLException e) {</span>
+<span class="nc" id="L119">            throw e;</span>
+        } finally {
+<span class="nc" id="L121">            try {</span>
+<span class="pc bpc" id="L122" title="3 of 4 branches missed.">                if (rs != null) {rs.close();}</span>
+<span class="pc bpc" id="L123" title="3 of 4 branches missed.">                if (pstmt != null) {pstmt.close();}</span>
+<span class="pc bpc" id="L124" title="3 of 4 branches missed.">                if (con != null) {con.close();}</span>
+<span class="nc" id="L125">            } catch (SQLException e) {</span>
+<span class="nc" id="L126">                throw e;</span>
+<span class="pc" id="L127">            }</span>
+        }
+        
+<span class="fc" id="L130">        return successful;</span>
+    }
+    
+    public ArrayList&lt;User&gt; getUserList() throws SQLException {
+<span class="nc" id="L134">        ArrayList&lt;User&gt; userList = new ArrayList();</span>
+        
+<span class="nc" id="L136">        Connection con = null;</span>
+<span class="nc" id="L137">        PreparedStatement pstmt = null;</span>
+<span class="nc" id="L138">        ResultSet rs = null;</span>
+        
+        try {
+<span class="nc" id="L141">            con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);</span>
+<span class="nc" id="L142">            pstmt = con.prepareStatement(</span>
+                &quot;SELECT * FROM User ORDER BY username&quot;
+            );
+<span class="nc" id="L145">            rs = pstmt.executeQuery();</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">            while (rs.next()) {</span>
+<span class="nc" id="L147">                User user = new User();</span>
+<span class="nc" id="L148">                user.setUsername(rs.getString(&quot;username&quot;));</span>
+<span class="nc" id="L149">                user.setRole(rs.getString(&quot;role&quot;));</span>
+<span class="nc" id="L150">                userList.add(user);</span>
+<span class="nc" id="L151">            }</span>
+<span class="nc" id="L152">        } catch (SQLException e) {</span>
+<span class="nc" id="L153">            throw e;</span>
+        } finally {
+<span class="nc" id="L155">            try {</span>
+<span class="nc bnc" id="L156" title="All 4 branches missed.">                if (rs != null) {rs.close();}</span>
+<span class="nc bnc" id="L157" title="All 4 branches missed.">                if (pstmt != null) {pstmt.close();}</span>
+<span class="nc bnc" id="L158" title="All 4 branches missed.">                if (con != null) {con.close();}</span>
+<span class="nc" id="L159">            } catch (SQLException e) {</span>
+<span class="nc" id="L160">                throw e;</span>
+<span class="nc" id="L161">            }</span>
+        }
+        
+<span class="nc" id="L164">        return userList;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

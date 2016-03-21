@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FormFiller.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Autofill&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">Autofill</a> &gt; <span class="el_source">FormFiller.java</span></div><h1>FormFiller.java</h1><pre class="source lang-java linenums">package Autofill;
+
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.parser.FilteredTextRenderListener;
+import com.itextpdf.text.pdf.parser.LocationTextExtractionStrategy;
+import com.itextpdf.text.pdf.parser.PdfTextExtractor;
+import com.itextpdf.text.pdf.parser.RegionTextRenderFilter;
+import com.itextpdf.text.pdf.parser.RenderFilter;
+import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Set;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class FormFiller {
+
+    private ArrayList&lt;AcroFormField&gt; fieldList;
+    private String sourceFilePath;
+    private HashMap groupMap;
+    
+<span class="fc" id="L31">    public FormFiller(String filepath) {</span>
+<span class="fc" id="L32">        fieldList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L33">        sourceFilePath = filepath;</span>
+<span class="fc" id="L34">        groupMap = new HashMap();</span>
+<span class="fc" id="L35">    }</span>
+    
+//    public ArrayList&lt;AcroFormField&gt; fillPdf(String dest, String data, Connection con, PreparedStatement pstmt, ResultSet rs) throws IOException, DocumentException, JSONException, SQLException {
+    public ArrayList&lt;AcroFormField&gt; fillPdf(String dest, String data) throws IOException, DocumentException, JSONException, SQLException {
+<span class="nc" id="L39">        Dictionary dictionary = Dictionary.getInstance();</span>
+<span class="nc" id="L40">        PdfReader reader = new PdfReader(sourceFilePath); </span>
+<span class="nc" id="L41">        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));</span>
+<span class="nc" id="L42">        AcroFields form = stamper.getAcroFields();        </span>
+<span class="nc" id="L43">        ArrayList&lt;String&gt; fields = new ArrayList&lt;&gt;(form.getFields().keySet());</span>
+<span class="nc" id="L44">        Collections.sort(fields);</span>
+        
+        AcroFormField temp;
+        
+<span class="nc" id="L48">        HashMap objectMap = new HashMap();</span>
+<span class="nc" id="L49">        HashMap fieldMap = new HashMap();</span>
+        
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        for (String key : fields) {</span>
+<span class="nc" id="L52">            temp = new AcroFormField();</span>
+<span class="nc" id="L53">            temp.setFieldName(key);</span>
+<span class="nc" id="L54">            temp.setPage(form.getFieldPositions(key).get(0).page);</span>
+<span class="nc" id="L55">            temp.setPosition(form.getFieldPositions(key).get(0).position);</span>
+<span class="nc" id="L56">            fieldList.add(temp);</span>
+<span class="nc" id="L57">            objectMap.put(key, temp);</span>
+            //fieldMap.put(key.toLowerCase(), key);
+            ArrayList&lt;String&gt; tempKeys;
+<span class="nc bnc" id="L60" title="All 2 branches missed.">            if (fieldMap.get(key.toLowerCase()) != null) {</span>
+<span class="nc" id="L61">                tempKeys = (ArrayList&lt;String&gt;)fieldMap.get(key.toLowerCase());</span>
+<span class="nc" id="L62">                tempKeys.add(key);</span>
+            } else {
+<span class="nc" id="L64">                tempKeys = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L65">                tempKeys.add(key);</span>
+<span class="nc" id="L66">                fieldMap.put(key.toLowerCase(), tempKeys);</span>
+            }
+
+            //System.out.println(key);
+            //ArrayList&lt;String&gt; samePrefixWords = getSamePrefixWords(key, con);
+<span class="nc" id="L71">            ArrayList&lt;String&gt; samePrefixWords = dictionary.getSamePrefixWords(key);</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">            for (String samePrefixWord: samePrefixWords) {</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">                if (fieldMap.get(samePrefixWord) != null) {</span>
+<span class="nc" id="L74">                    tempKeys = (ArrayList&lt;String&gt;)fieldMap.get(samePrefixWord);</span>
+<span class="nc" id="L75">                    tempKeys.add(key);</span>
+                } else {
+<span class="nc" id="L77">                    tempKeys = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L78">                    tempKeys.add(key);</span>
+<span class="nc" id="L79">                    fieldMap.put(samePrefixWord, tempKeys);</span>
+                }
+<span class="nc" id="L81">            }</span>
+<span class="nc" id="L82">        }</span>
+
+        // Get field label and group
+        RenderFilter filter;
+        TextExtractionStrategy strategy;
+        Rectangle targetArea;
+<span class="nc" id="L88">        Collections.sort(fieldList);</span>
+<span class="nc" id="L89">        AcroFormField currentField = null;</span>
+<span class="nc" id="L90">        AcroFormField previousField = null;</span>
+<span class="nc" id="L91">        String group = null;</span>
+<span class="nc" id="L92">        String preGroup = null;</span>
+<span class="nc" id="L93">        int groupCount = 1;</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        for (int i=0; i&lt;fieldList.size(); i++) {</span>
+<span class="nc" id="L95">            currentField = fieldList.get(i);</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">            if (form.getFieldType(currentField.getFieldName()) == AcroFields.FIELD_TYPE_TEXT) {</span>
+<span class="nc bnc" id="L97" title="All 4 branches missed.">                if (i&gt;0 &amp;&amp; isSameLinePreviousField(currentField.getPosition(), previousField.getPosition())) {</span>
+<span class="nc" id="L98">                    targetArea = new Rectangle(</span>
+<span class="nc" id="L99">                        previousField.getPosition().getRight(), // Lower left x</span>
+<span class="nc" id="L100">                        currentField.getPosition().getBottom(), // Lower left y</span>
+<span class="nc" id="L101">                        currentField.getPosition().getLeft(),   // Upper right x</span>
+<span class="nc" id="L102">                        currentField.getPosition().getTop()     // Upper right y</span>
+                    );
+                } else {
+<span class="nc" id="L105">                    targetArea = new Rectangle(</span>
+                        0,                                      // lower left x
+<span class="nc" id="L107">                        currentField.getPosition().getBottom(), // Lower left y</span>
+<span class="nc" id="L108">                        currentField.getPosition().getLeft(),   // Upper right x</span>
+<span class="nc" id="L109">                        currentField.getPosition().getTop()     // Upper right y</span>
+                    );                    
+                }
+<span class="nc" id="L112">                filter = new RegionTextRenderFilter(targetArea);</span>
+<span class="nc" id="L113">                strategy = new FilteredTextRenderListener(new LocationTextExtractionStrategy(), filter);</span>
+<span class="nc" id="L114">                currentField.setFieldValue(form.getField(currentField.getFieldName()));</span>
+<span class="nc" id="L115">                currentField.setFieldLabel(PdfTextExtractor.getTextFromPage(reader, currentField.getPage(), strategy));                </span>
+            }   
+
+<span class="nc bnc" id="L118" title="All 6 branches missed.">            if (i&gt;0 &amp;&amp; (isNewSection(currentField.getPosition(), previousField.getPosition()) || currentField.getPage() != previousField.getPage())) {</span>
+<span class="nc" id="L119">                targetArea = new Rectangle(</span>
+                    0,                                          // lower left x
+<span class="nc" id="L121">                    currentField.getPosition().getTop(),        // Lower left y</span>
+<span class="nc" id="L122">                    currentField.getPosition().getRight(),      // Upper right x</span>
+<span class="nc" id="L123">                    currentField.getPosition().getTop()+currentField.getPosition().getHeight()      // Upper right y</span>
+                );
+<span class="nc" id="L125">                filter = new RegionTextRenderFilter(targetArea);</span>
+<span class="nc" id="L126">                strategy = new FilteredTextRenderListener(new LocationTextExtractionStrategy(), filter);</span>
+<span class="nc" id="L127">                String tempGroup = PdfTextExtractor.getTextFromPage(reader, currentField.getPage(), strategy);</span>
+                
+<span class="nc bnc" id="L129" title="All 2 branches missed.">                if (!tempGroup.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L130">                    group = tempGroup.split(&quot;\\(&quot;)[0].trim();</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">                    if (group.split(&quot; &quot;).length &gt; 4) {</span>
+<span class="nc" id="L132">                        group = &quot;Other&quot;;</span>
+<span class="nc" id="L133">                        preGroup = group;</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">                    } else if (!group.equals(preGroup)) {</span>
+                        // New group name, reset counter
+<span class="nc" id="L136">                        groupCount = 1;</span>
+<span class="nc" id="L137">                        preGroup = group;</span>
+                    } else {
+                        // Group name same as previous group, adjust group name and increase counter
+<span class="nc" id="L140">                        groupCount++;</span>
+<span class="nc" id="L141">                        group = group + &quot; &quot; + groupCount;</span>
+                    }
+                }
+            }
+<span class="nc" id="L145">            currentField.setGroup(group);</span>
+<span class="nc" id="L146">            previousField = fieldList.get(i);</span>
+        }
+        
+        
+<span class="nc" id="L150">        JSONArray dataArray = new JSONArray(data);</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        for (int i=0; i&lt;dataArray.length(); i++) {</span>
+<span class="nc" id="L152">            boolean matchFound = false;</span>
+<span class="nc" id="L153">            JSONObject dataObject = dataArray.getJSONObject(i);</span>
+<span class="nc" id="L154">            System.out.println(dataArray.get(i));</span>
+            
+<span class="nc bnc" id="L156" title="All 2 branches missed.">            if (fieldMap.get(dataObject.getString(&quot;name&quot;)) != null) {</span>
+                // Exact match
+<span class="nc" id="L158">                ArrayList&lt;String&gt; keyList = (ArrayList&lt;String&gt;)fieldMap.get(dataObject.getString(&quot;name&quot;));</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">                for (String key : keyList) {</span>
+<span class="nc" id="L160">                    AcroFormField field = (AcroFormField)objectMap.get(key);</span>
+                    // Fill and process next if group match
+<span class="nc bnc" id="L162" title="All 2 branches missed.">                    if (isGroupMatch(field, dataObject.getString(&quot;group&quot;))) {</span>
+<span class="nc" id="L163">                        form.setField(key, dataObject.getString(&quot;value&quot;));</span>
+<span class="nc" id="L164">                        field.setPersonalFieldName(dataObject.getString(&quot;name&quot;));</span>
+<span class="nc" id="L165">                        matchFound = true;</span>
+<span class="nc" id="L166">                        break;</span>
+                    }   
+<span class="nc" id="L168">                }</span>
+            }
+            
+<span class="nc bnc" id="L171" title="All 4 branches missed.">            if (fieldMap.get(dataObject.getString(&quot;name&quot;)) == null &amp;&amp; !matchFound) {    // Search dictionary</span>
+                // Get standard field name for synonym
+                //String standard = getStandardWord(dataObject.getString(&quot;name&quot;), con);
+<span class="nc" id="L174">                String standard = dictionary.getStandardWord(dataObject.getString(&quot;name&quot;));</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">                if (fieldMap.get(standard) != null) {</span>
+                    // standard is the key
+<span class="nc" id="L177">                    ArrayList&lt;String&gt; keyList = (ArrayList&lt;String&gt;)fieldMap.get(standard);</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">                    for (String key : keyList) {</span>
+<span class="nc" id="L179">                        AcroFormField field = (AcroFormField)objectMap.get(key);</span>
+                        // Fill and process next if group match
+<span class="nc bnc" id="L181" title="All 2 branches missed.">                        if (isGroupMatch(field, dataObject.getString(&quot;group&quot;))) {</span>
+<span class="nc" id="L182">                            form.setField(key, dataObject.getString(&quot;value&quot;));</span>
+<span class="nc" id="L183">                            field.setPersonalFieldName(dataObject.getString(&quot;name&quot;));</span>
+<span class="nc" id="L184">                            break;</span>
+                        } 
+<span class="nc" id="L186">                    }</span>
+<span class="nc" id="L187">                } else {</span>
+                    // standard is not the key
+<span class="nc" id="L189">                    ArrayList&lt;String&gt; synonyms = dictionary.getSynonyms(dataObject.getString(&quot;name&quot;));</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">                    for (String fieldName: synonyms) {</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">                        if (fieldMap.get(fieldName) != null) {</span>
+<span class="nc" id="L192">                            ArrayList&lt;String&gt; keyList = (ArrayList&lt;String&gt;)fieldMap.get(fieldName);</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">                            for (String key : keyList) {</span>
+<span class="nc" id="L194">                                AcroFormField field = (AcroFormField)objectMap.get(key);</span>
+                                // Fill and process next if group match
+                                //System.out.println(field.getFieldLabel() + &quot; &quot; + field.getGroup());
+<span class="nc bnc" id="L197" title="All 2 branches missed.">                                if (isGroupMatch(field, dataObject.getString(&quot;group&quot;))) {</span>
+<span class="nc" id="L198">                                    form.setField(key, dataObject.getString(&quot;value&quot;));</span>
+<span class="nc" id="L199">                                    field.setPersonalFieldName(dataObject.getString(&quot;name&quot;));</span>
+                                    //System.out.println(fieldName);
+<span class="nc" id="L201">                                    matchFound = true;</span>
+<span class="nc" id="L202">                                    break;</span>
+                                }
+<span class="nc" id="L204">                            }</span>
+                            // Process next if filled
+<span class="nc bnc" id="L206" title="All 2 branches missed.">                            if (matchFound) {</span>
+<span class="nc" id="L207">                                break;</span>
+                            }
+                        }
+<span class="nc" id="L210">                    }</span>
+                }
+            }
+        }
+        
+<span class="nc bnc" id="L215" title="All 2 branches missed.">        for (int i=0; i&lt;fieldList.size(); i++) {</span>
+<span class="nc" id="L216">            currentField = fieldList.get(i);</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">            if (form.getFieldType(currentField.getFieldName()) == AcroFields.FIELD_TYPE_TEXT) {</span>
+<span class="nc" id="L218">                currentField.setFieldValue(form.getField(currentField.getFieldName()));</span>
+            }   
+        }
+        
+<span class="nc" id="L222">        stamper.close();</span>
+<span class="nc" id="L223">        reader.close();</span>
+
+<span class="nc" id="L225">        return fieldList;</span>
+    }
+    
+    
+//    private boolean isGroupMatch(Connection con, AcroFormField field, String group) throws SQLException {
+    private boolean isGroupMatch(AcroFormField field, String group) throws SQLException {
+<span class="fc" id="L231">        Dictionary dictionary = Dictionary.getInstance();</span>
+        String fieldGroup;
+        
+<span class="fc bfc" id="L234" title="All 2 branches covered.">        if (field.getGroup() == null) {</span>
+<span class="fc" id="L235">            fieldGroup = &quot;personal information&quot;;   </span>
+        } else {
+<span class="fc" id="L237">            fieldGroup = field.getGroup().toLowerCase();</span>
+<span class="fc" id="L238">            fieldGroup = decodeGroupName(fieldGroup);</span>
+        }
+        
+<span class="fc" id="L241">        String dataGroup = group.toLowerCase();</span>
+<span class="fc" id="L242">        dataGroup = decodeGroupName(dataGroup);</span>
+        
+        //ArrayList&lt;String&gt; groupSynonyms = getSynonyms(fieldGroup, con);
+<span class="fc" id="L245">        ArrayList&lt;String&gt; groupSynonyms = dictionary.getSynonyms(fieldGroup);</span>
+
+        // Default group is Perosnal Information
+<span class="fc bfc" id="L248" title="All 2 branches covered.">        if (dataGroup.equals(&quot;&quot;)) {</span>
+<span class="fc" id="L249">            dataGroup = &quot;personal information&quot;;</span>
+        }
+        
+<span class="pc bpc" id="L252" title="1 of 2 branches missed.">        if (groupMap.get(group) != null) {</span>
+            // Group matching already exist, decide according to the record
+<span class="nc" id="L254">            String matchingGroup = (String)groupMap.get(group);</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">            if (matchingGroup.equals(field.getGroup())) {</span>
+<span class="nc" id="L256">                return true;</span>
+            }
+<span class="pc bfc" id="L258" title="All 2 branches covered.">        } else if (fieldGroup.equals(dataGroup)) {  // Group matching not existing, try to create new matching</span>
+            // Exact match of Group name 
+<span class="fc" id="L260">            groupMap.put(group, field.getGroup());</span>
+<span class="fc" id="L261">            return true;</span>
+        } else {
+<span class="fc bfc" id="L263" title="All 2 branches covered.">            for (String groupSynonym : groupSynonyms) {</span>
+<span class="pc bpc" id="L264" title="1 of 2 branches missed.">                if (fieldGroup.equals(groupSynonym)) {</span>
+                    // Match of synonym of the group name
+<span class="fc" id="L266">                    groupMap.put(group, field.getGroup());</span>
+<span class="fc" id="L267">                    return true;</span>
+                }
+<span class="nc" id="L269">            }</span>
+        }
+
+<span class="fc" id="L272">        return false;</span>
+    }
+    
+    private boolean isSameLinePreviousField(Rectangle curFieldPosition, Rectangle preFieldPosition) {
+<span class="pc bpc" id="L276" title="1 of 4 branches missed.">        return isOnRight(curFieldPosition, preFieldPosition) &amp;&amp; isOnSameLine(curFieldPosition, preFieldPosition);</span>
+    }
+    
+    private boolean isOnRight(Rectangle curFieldPosition, Rectangle preFieldPosition) {
+<span class="fc bfc" id="L280" title="All 2 branches covered.">        return curFieldPosition.getLeft() &gt; preFieldPosition.getRight();</span>
+    }
+    
+    private boolean isOnSameLine(Rectangle curFieldPosition, Rectangle preFieldPosition) {
+<span class="fc" id="L284">        double dy = curFieldPosition.getTop()-preFieldPosition.getTop();</span>
+<span class="fc bfc" id="L285" title="All 2 branches covered.">        return  dy &lt; curFieldPosition.getHeight();</span>
+    }
+    
+    private boolean isNewSection(Rectangle curFieldPosition, Rectangle preFieldPosition) {
+<span class="pc bpc" id="L289" title="1 of 4 branches missed.">        return !isOnRight(curFieldPosition, preFieldPosition) &amp;&amp; isSeperated(curFieldPosition, preFieldPosition);         </span>
+    }
+    
+    private boolean isSeperated(Rectangle curFieldPosition, Rectangle preFieldPosition) {
+<span class="fc" id="L293">        double dy = preFieldPosition.getBottom()-curFieldPosition.getTop();</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">        return dy &gt; curFieldPosition.getHeight();</span>
+    }
+    
+    private String decodeGroupName(String originGroupName) {
+<span class="fc" id="L298">        String[] tempGroupName = originGroupName.split(&quot; &quot;);</span>
+        try {
+<span class="nc" id="L300">            Integer.parseInt(tempGroupName[tempGroupName.length-1]);</span>
+<span class="nc" id="L301">            String decodedName = &quot;&quot;;</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">            for (int i=0; i&lt;tempGroupName.length-2; i++) {</span>
+<span class="nc" id="L303">                decodedName = decodedName + tempGroupName[i];</span>
+            }
+<span class="nc" id="L305">            return decodedName;</span>
+<span class="fc" id="L306">        } catch (NumberFormatException e) {</span>
+<span class="fc" id="L307">            return originGroupName;</span>
+        }
+    }
+    /*
+    private String getStandardWord(String word, Connection dictionaryCon) throws SQLException {
+        String standard = &quot;&quot;;
+        PreparedStatement pstmt;
+        ResultSet rs;
+        
+        pstmt = dictionaryCon.prepareStatement(
+            &quot;SELECT standard FROM Dictionary WHERE synonym = ? ORDER BY probability&quot;
+        );
+        pstmt.setString(1, word);
+        rs = pstmt.executeQuery();
+        if (rs.next()) {
+            standard = rs.getString(&quot;standard&quot;);
+        }
+        return standard;
+    }
+    
+    private ArrayList&lt;String&gt; getSynonyms(String word, Connection dictionaryCon) throws SQLException {
+        ArrayList&lt;String&gt; synonyms = new ArrayList&lt;&gt;();
+        PreparedStatement pstmt;
+        ResultSet rs;
+        
+        String standard = getStandardWord(word, dictionaryCon);
+        pstmt = dictionaryCon.prepareStatement(
+            &quot;SELECT synonym FROM Dictionary WHERE standard = ? OR standard = ? ORDER BY probability&quot;
+        );
+        pstmt.setString(1, word);
+        pstmt.setString(2, standard); 
+        rs = pstmt.executeQuery();
+        while (rs.next()) {
+            synonyms.add(rs.getString(&quot;synonym&quot;));
+        }
+        
+        return synonyms;
+    }
+    
+    private ArrayList&lt;String&gt; getSamePrefixWords(String word, Connection dictionaryCon) throws SQLException {
+        ArrayList&lt;String&gt; samePrefixWords = new ArrayList&lt;&gt;();
+        PreparedStatement pstmt;
+        ResultSet rs;
+        
+        // Create search key
+        StringBuilder strBuilder = new StringBuilder(word);
+        strBuilder.insert(word.length(), &quot;%&quot;);
+        for (int i=word.length()-1; i&gt;0; i--) {
+            if (Character.isUpperCase(word.charAt(i))) {
+                strBuilder.insert(i, &quot; %&quot;);
+            }
+        }
+        String searchKey = strBuilder.toString().toLowerCase();
+
+        pstmt = dictionaryCon.prepareStatement(
+            &quot;SELECT standard FROM Dictionary WHERE standard LIKE ?&quot;
+        );
+        pstmt.setString(1, searchKey);
+        rs = pstmt.executeQuery();
+        while (rs.next()) {
+            samePrefixWords.add(rs.getString(&quot;standard&quot;));
+        }
+
+        pstmt = dictionaryCon.prepareStatement(
+            &quot;SELECT synonym FROM Dictionary WHERE synonym LIKE ?&quot;
+        );
+        pstmt.setString(1, searchKey);
+        rs = pstmt.executeQuery();
+        while (rs.next()) {
+            samePrefixWords.add(rs.getString(&quot;synonym&quot;));
+        }
+        
+        return samePrefixWords;
+    }
+    */
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

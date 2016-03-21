@@ -1,0 +1,96 @@
+table {
+	border-collapse: collapse;
+	border-style:outset;
+}
+
+th, td {
+	border: 1px solid black;
+	width: 150px;
+}
+
+td {
+	text-align:	center;	
+}
+
+input {
+	text-align: center;
+}
+
+div.ui-datepicker{
+	font-size:	10px;
+}
+
+body {
+	margin:0;
+	padding:0;
+}
+
+#tabArea {
+	font-size:	12px;
+}
+
+#tabArea>div>table {
+	font-size:	12px;
+}
+
+
+#dataTable {
+	color: #000000;
+	/*margin:	auto;*/
+}
+
+.container {
+	margin-left: 30px;
+	margin-right: 30px;
+}
+
+#navigator {
+	clear: both;
+	display: block;
+	color: #FFFFFF; 
+	background-color: #000000;
+}
+
+#navigator a {
+	text-decoration: none;
+	font-size: 18px;
+	height: 40px;
+	width: 100px;
+	text-align: center;
+	display: inline-block;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	line-height: 40px;
+
+}
+
+#navigator a:link, 
+#navigator a:visited {
+	color: #FFFFFF; 
+	background-color: #000000;
+}
+
+#navigator a:hover {
+	background-color: #059BD8;
+}
+
+#header {
+	color: #666666; 
+	background-color: #E3F1F9;
+}
+
+#header h1 {
+	margin: 0;
+}
+
+#logo {
+	float: left;
+}
+
+#loginBox {
+	float: right;
+}
+
+#main {
+	padding-top: 10px;
+	background-color: #FFFFFF;
+}

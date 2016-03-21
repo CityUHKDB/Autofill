@@ -1,0 +1,3 @@
+pageLoad = function() {
+	$("#tabArea").tabs();
+}
