@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="4" failures="0" hostname="AngussdeMacBook-Pro.local" name="Autofill.ControllerTest" skipped="0" tests="6" time="1.283" timestamp="2016-02-01T13:54:18">
+<testsuite errors="6" failures="0" hostname="AngussdeMacBook-Pro.local" name="Autofill.ControllerTest" skipped="0" tests="6" time="1.703" timestamp="2016-03-27T02:28:07">
   <properties>
     <property name="libs.jsp-compiler.javadoc" value="" />
     <property name="file.reference.commons-fileupload-1.3.1.jar" value="web/WEB-INF/lib/commons-fileupload-1.3.1.jar" />
     <property name="netbeans.autoupdate.country" value="TW" />
-    <property name="javac.test.classpath" value="web/WEB-INF/lib/itextpdf-5.5.6.jar:web/WEB-INF/lib/json.jar:web/WEB-INF/lib/commons-lang3-3.4.jar:web/WEB-INF/lib/commons-fileupload-1.3.1.jar:web/WEB-INF/lib/commons-io-2.4.jar:web/WEB-INF/lib/mockito-all-1.9.5.jar:build/web/WEB-INF/classes:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar" />
+    <property name="javac.test.classpath" value="web/WEB-INF/lib/itextpdf-5.5.6.jar:web/WEB-INF/lib/json.jar:web/WEB-INF/lib/commons-lang3-3.4.jar:web/WEB-INF/lib/commons-fileupload-1.3.1.jar:web/WEB-INF/lib/commons-io-2.4.jar:web/WEB-INF/lib/mockito-all-1.9.5.jar:web/WEB-INF/lib/asm-3.1.jar:web/WEB-INF/lib/cglib-2.2.jar:web/WEB-INF/lib/easymock-3.0.jar:web/WEB-INF/lib/javassist.jar:web/WEB-INF/lib/objenesis-2.2.jar:web/WEB-INF/lib/powermock-easymock-1.4.10-full.jar:build/web/WEB-INF/classes:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar" />
     <property name="libs.jsf20.maven-pom" value="" />
     <property name="j2ee.copy.static.files.on.save" value="true" />
     <property name="source.root" value="src" />
@@ -37,6 +37,7 @@
     <property name="do.tmp.war.package" value="true" />
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
     <property name="nb.show.statistics.ui" value="usageStatisticsEnabled" />
+    <property name="file.reference.cglib-2.2.jar" value="web/WEB-INF/lib/cglib-2.2.jar" />
     <property name="netbeans.autoupdate.variant" value="" />
     <property name="have.tests" value="true" />
     <property name="org.xml.sax.driver" value="com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser" />
@@ -51,10 +52,9 @@
     <property name="libs.JWSAntTasks.maven-pom" value="" />
     <property name="libs.jstl.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/jstl-impl.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/jstl-api.jar" />
     <property name="libs.testng.src" value="" />
-    <property name="nu.validator.spec.alt-advice" value="jar:file:/Applications/NetBeans/NetBeans%208.0.2.app/Contents/Resources/NetBeans/ide/modules/ext/validator.jar!/nu/validator/localentities/files/wiki_whatwg_org_wiki_Validator_nu_alt_advice" />
     <property name="libs.spring-webmvc3.0.src" value="" />
     <property name="libs.restapi.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/jaxrs-2.0/javax.ws.rs-api-2.0.jar" />
-    <property name="runmain.jvmargs" value=" -javaagent:&quot;/Users/Angus/Library/Application Support/NetBeans/8.0.2/modules/ext/jacocoagent.jar&quot;=includes=Autofill.*,destfile=&quot;/Users/Angus/Documents/NetBeansProjects/Autofill/jacoco.exec-13746377927247&quot;" />
+    <property name="runmain.jvmargs" value=" -javaagent:&quot;/Users/Angus/Library/Application Support/NetBeans/8.0.2/modules/ext/jacocoagent.jar&quot;=includes=Autofill.*,destfile=&quot;/Users/Angus/Documents/NetBeansProjects/Autofill/jacoco.exec-54349696613178&quot;" />
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
     <property name="libs.jaxb.maven-pom" value="" />
     <property name="os.arch" value="x86_64" />
@@ -65,18 +65,19 @@
     <property name="libs.Comet-GlassFish-v3.javadoc" value="" />
     <property name="libs.spring-webmvc3.0.maven-pom" value="" />
     <property name="libs.swing-layout.maven-pom" value="" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner Autofill.ControllerTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/Angus/Documents/NetBeansProjects/Autofill/build/test/results/TEST-Autofill.ControllerTest.xml crashfile=/Users/Angus/Documents/NetBeansProjects/Autofill/build/junitvmwatcher1989274095203735846.properties propsfile=/Users/Angus/Documents/NetBeansProjects/Autofill/build/junit6752303316916081463.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner Autofill.ControllerTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/Angus/Documents/NetBeansProjects/Autofill/build/test/results/TEST-Autofill.ControllerTest.xml crashfile=/Users/Angus/Documents/NetBeansProjects/Autofill/build/junitvmwatcher7967411284424337448.properties propsfile=/Users/Angus/Documents/NetBeansProjects/Autofill/build/junit6196217734230761267.properties" />
     <property name="build.classes.dir" value="build/web/WEB-INF/classes" />
     <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
     <property name="ap.supported.internal" value="true" />
     <property name="libs.javaee-endorsed-api-7.0.javadoc" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/docs/javaee-doc-api.jar" />
     <property name="libs.jaxws21.javadoc" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/docs/jaxws-api-doc.zip" />
+    <property name="file.reference.objenesis-2.2.jar" value="web/WEB-INF/lib/objenesis-2.2.jar" />
     <property name="libs.spring-webmvc4.0.javadoc" value="" />
     <property name="build.web.excludes" value="**/*.java,**/*.form" />
     <property name="includes" value="**" />
     <property name="user.country" value="TW" />
     <property name="javadoc.encoding" value="UTF-8" />
-    <property name="javac.classpath" value="web/WEB-INF/lib/itextpdf-5.5.6.jar:web/WEB-INF/lib/json.jar:web/WEB-INF/lib/commons-lang3-3.4.jar:web/WEB-INF/lib/commons-fileupload-1.3.1.jar:web/WEB-INF/lib/commons-io-2.4.jar:web/WEB-INF/lib/mockito-all-1.9.5.jar" />
+    <property name="javac.classpath" value="web/WEB-INF/lib/itextpdf-5.5.6.jar:web/WEB-INF/lib/json.jar:web/WEB-INF/lib/commons-lang3-3.4.jar:web/WEB-INF/lib/commons-fileupload-1.3.1.jar:web/WEB-INF/lib/commons-io-2.4.jar:web/WEB-INF/lib/mockito-all-1.9.5.jar:web/WEB-INF/lib/asm-3.1.jar:web/WEB-INF/lib/cglib-2.2.jar:web/WEB-INF/lib/easymock-3.0.jar:web/WEB-INF/lib/javassist.jar:web/WEB-INF/lib/objenesis-2.2.jar:web/WEB-INF/lib/powermock-easymock-1.4.10-full.jar" />
     <property name="libs.jsp-compilation-syscp.src" value="" />
     <property name="libs.JAVADB_DRIVER_LABEL.src" value="" />
     <property name="libs.spring-framework400.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/ide/modules/org-apache-commons-logging.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/cglib-2.2.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-aop-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-aspects-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-beans-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-build-src-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-context-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-context-support-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-core-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-expression-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-framework-bom-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-instrument-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-instrument-tomcat-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-jdbc-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-jms-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-messaging-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-orm-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-oxm-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-test-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-tx-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-web-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-webmvc-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-webmvc-portlet-4.0.1.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-websocket-4.0.1.RELEASE.jar" />
@@ -89,6 +90,7 @@
     <property name="java.endorsed.dirs" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/jre/lib/endorsed" />
     <property name="libs.Comet-GlassFish-v3.maven-pom" value="" />
     <property name="netbeans.dynamic.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/core/core.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/core/org-openide-filesystems.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/core/locale/core_ja.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/core/locale/core_pt_BR.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/core/locale/core_ru.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/core/locale/core_zh_CN.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/core/locale/org-openide-filesystems_ja.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/core/locale/org-openide-filesystems_pt_BR.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/core/locale/org-openide-filesystems_ru.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/core/locale/org-openide-filesystems_zh_CN.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/nb/core/org-netbeans-upgrader.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/nb/core/locale/core_nb.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/nb/core/locale/core_nb_ja.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/nb/core/locale/core_nb_pt_BR.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/nb/core/locale/core_nb_ru.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/nb/core/locale/core_nb_zh_CN.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/nb/core/locale/org-netbeans-upgrader_ja.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/nb/core/locale/org-netbeans-upgrader_pt_BR.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/nb/core/locale/org-netbeans-upgrader_ru.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/nb/core/locale/org-netbeans-upgrader_zh_CN.jar" />
+    <property name="auxiliary.org-netbeans-modules-css-prep.sass_2e_mappings" value="/scss:/css" />
     <property name="java.vm.specification.version" value="1.8" />
     <property name="libs.hibernate4-support.src" value="" />
     <property name="libs.primefaces.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/primefaces/primefaces-5.0.jar" />
@@ -99,6 +101,7 @@
     <property name="do.war.package.with.custom.manifest" value="true" />
     <property name="netbeans.autoupdate.language" value="zh" />
     <property name="java.vendor" value="Oracle Corporation" />
+    <property name="auxiliary.org-netbeans-modules-css-prep.less_2e_enabled" value="false" />
     <property name="libs.javaee-api-6.0.javadoc" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/docs/javaee-doc-api.jar" />
     <property name="sun.font.fontmanager" value="sun.font.CFontManager" />
     <property name="javac.debug" value="true" />
@@ -107,7 +110,7 @@
     <property name="libs.Java-EE-GlassFish-v3-Prelude.maven-pom" value="" />
     <property name="libs.junit_4.maven-pom" value="" />
     <property name="resource.dir" value="setup" />
-    <property name="javac.test.processorpath" value="web/WEB-INF/lib/itextpdf-5.5.6.jar:web/WEB-INF/lib/json.jar:web/WEB-INF/lib/commons-lang3-3.4.jar:web/WEB-INF/lib/commons-fileupload-1.3.1.jar:web/WEB-INF/lib/commons-io-2.4.jar:web/WEB-INF/lib/mockito-all-1.9.5.jar:build/web/WEB-INF/classes:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar" />
+    <property name="javac.test.processorpath" value="web/WEB-INF/lib/itextpdf-5.5.6.jar:web/WEB-INF/lib/json.jar:web/WEB-INF/lib/commons-lang3-3.4.jar:web/WEB-INF/lib/commons-fileupload-1.3.1.jar:web/WEB-INF/lib/commons-io-2.4.jar:web/WEB-INF/lib/mockito-all-1.9.5.jar:web/WEB-INF/lib/asm-3.1.jar:web/WEB-INF/lib/cglib-2.2.jar:web/WEB-INF/lib/easymock-3.0.jar:web/WEB-INF/lib/javassist.jar:web/WEB-INF/lib/objenesis-2.2.jar:web/WEB-INF/lib/powermock-easymock-1.4.10-full.jar:build/web/WEB-INF/classes:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar" />
     <property name="netbeans.buildnumber" value="201411181905" />
     <property name="libs.JWSAntTasks.javadoc" value="" />
     <property name="build.generated.sources.dir" value="build/generated-sources" />
@@ -157,7 +160,7 @@
     <property name="test.binaryincludes" value="&lt;nothing&gt;" />
     <property name="libs.primefaces.javadoc" value="" />
     <property name="libs.spring-framework300.maven-pom" value="" />
-    <property name="run.test.classpath" value="web/WEB-INF/lib/itextpdf-5.5.6.jar:web/WEB-INF/lib/json.jar:web/WEB-INF/lib/commons-lang3-3.4.jar:web/WEB-INF/lib/commons-fileupload-1.3.1.jar:web/WEB-INF/lib/commons-io-2.4.jar:web/WEB-INF/lib/mockito-all-1.9.5.jar:build/web/WEB-INF/classes:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar:build/test/classes" />
+    <property name="run.test.classpath" value="web/WEB-INF/lib/itextpdf-5.5.6.jar:web/WEB-INF/lib/json.jar:web/WEB-INF/lib/commons-lang3-3.4.jar:web/WEB-INF/lib/commons-fileupload-1.3.1.jar:web/WEB-INF/lib/commons-io-2.4.jar:web/WEB-INF/lib/mockito-all-1.9.5.jar:web/WEB-INF/lib/asm-3.1.jar:web/WEB-INF/lib/cglib-2.2.jar:web/WEB-INF/lib/easymock-3.0.jar:web/WEB-INF/lib/javassist.jar:web/WEB-INF/lib/objenesis-2.2.jar:web/WEB-INF/lib/powermock-easymock-1.4.10-full.jar:build/web/WEB-INF/classes:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar:build/test/classes" />
     <property name="ant.project.invoked-targets" value="test" />
     <property name="test.binaryexcludes" value="" />
     <property name="libs.swing-layout.javadoc" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/docs/swing-layout-1.0.4-doc.zip" />
@@ -194,7 +197,7 @@
     <property name="libs.jpa20-persistence.javadoc" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/docs/javax.persistence-2.1.0-doc.zip" />
     <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/jre" />
     <property name="libs.jsp-compilation.src" value="" />
-    <property name="debug.test.classpath" value="web/WEB-INF/lib/itextpdf-5.5.6.jar:web/WEB-INF/lib/json.jar:web/WEB-INF/lib/commons-lang3-3.4.jar:web/WEB-INF/lib/commons-fileupload-1.3.1.jar:web/WEB-INF/lib/commons-io-2.4.jar:web/WEB-INF/lib/mockito-all-1.9.5.jar:build/web/WEB-INF/classes:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar:build/test/classes" />
+    <property name="debug.test.classpath" value="web/WEB-INF/lib/itextpdf-5.5.6.jar:web/WEB-INF/lib/json.jar:web/WEB-INF/lib/commons-lang3-3.4.jar:web/WEB-INF/lib/commons-fileupload-1.3.1.jar:web/WEB-INF/lib/commons-io-2.4.jar:web/WEB-INF/lib/mockito-all-1.9.5.jar:web/WEB-INF/lib/asm-3.1.jar:web/WEB-INF/lib/cglib-2.2.jar:web/WEB-INF/lib/easymock-3.0.jar:web/WEB-INF/lib/javassist.jar:web/WEB-INF/lib/objenesis-2.2.jar:web/WEB-INF/lib/powermock-easymock-1.4.10-full.jar:build/web/WEB-INF/classes:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar:build/test/classes" />
     <property name="libs.javaee-endorsed-api-6.0.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/javaee6-endorsed/javax.annotation.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/javaee6-endorsed/jaxb-api-osgi.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/javaee6-endorsed/webservices-api-osgi.jar" />
     <property name="libs.javaee-api-6.0.src" value="" />
     <property name="netbeans.importclass" value="org.netbeans.upgrade.AutoUpgrade" />
@@ -226,7 +229,8 @@
     <property name="sun.java2d.noddraw" value="true" />
     <property name="libs.jsp-compiler.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/ant/extra/jspcompile.jar" />
     <property name="dist.ear.war" value="dist/Autofill.war" />
-    <property name="javac.processorpath" value="web/WEB-INF/lib/itextpdf-5.5.6.jar:web/WEB-INF/lib/json.jar:web/WEB-INF/lib/commons-lang3-3.4.jar:web/WEB-INF/lib/commons-fileupload-1.3.1.jar:web/WEB-INF/lib/commons-io-2.4.jar:web/WEB-INF/lib/mockito-all-1.9.5.jar" />
+    <property name="javac.processorpath" value="web/WEB-INF/lib/itextpdf-5.5.6.jar:web/WEB-INF/lib/json.jar:web/WEB-INF/lib/commons-lang3-3.4.jar:web/WEB-INF/lib/commons-fileupload-1.3.1.jar:web/WEB-INF/lib/commons-io-2.4.jar:web/WEB-INF/lib/mockito-all-1.9.5.jar:web/WEB-INF/lib/asm-3.1.jar:web/WEB-INF/lib/cglib-2.2.jar:web/WEB-INF/lib/easymock-3.0.jar:web/WEB-INF/lib/javassist.jar:web/WEB-INF/lib/objenesis-2.2.jar:web/WEB-INF/lib/powermock-easymock-1.4.10-full.jar" />
+    <property name="file.reference.asm-3.1.jar" value="web/WEB-INF/lib/asm-3.1.jar" />
     <property name="javac.compilerargs" value="" />
     <property name="ant.file" value="/Users/Angus/Documents/NetBeansProjects/Autofill/build.xml" />
     <property name="libs.beans-binding.maven-pom" value="" />
@@ -244,7 +248,6 @@
     <property name="org.openide.major.version" value="IDE/1" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
     <property name="netbeans.user" value="/Users/Angus/Library/Application Support/NetBeans/8.0.2" />
-    <property name="tests.failed" value="true" />
     <property name="javadoc.additionalparam" value="" />
     <property name="java.io.tmpdir" value="/var/folders/_r/r2zfl4dj4tn64h_s9xrhtyv80000gn/T/" />
     <property name="java.vendor.url" value="http://java.oracle.com/" />
@@ -253,12 +256,14 @@
     <property name="file.reference.mockito-all-1.9.5.jar" value="web/WEB-INF/lib/mockito-all-1.9.5.jar" />
     <property name="compile.jsps" value="false" />
     <property name="libs.jsp-compiler.src" value="" />
+    <property name="org.openide.awt.ActionReference.completion" value="org.netbeans.modules.apisupport.project.layers.PathCompletions" />
     <property name="deploy.ant.properties.file" value="/Users/Angus/Library/Application Support/NetBeans/8.0.2/tomcat60.properties" />
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/jre/lib" />
     <property name="have.sources" value="true" />
-    <property name="debug.classpath" value="build/web/WEB-INF/classes:web/WEB-INF/lib/itextpdf-5.5.6.jar:web/WEB-INF/lib/json.jar:web/WEB-INF/lib/commons-lang3-3.4.jar:web/WEB-INF/lib/commons-fileupload-1.3.1.jar:web/WEB-INF/lib/commons-io-2.4.jar:web/WEB-INF/lib/mockito-all-1.9.5.jar" />
+    <property name="debug.classpath" value="build/web/WEB-INF/classes:web/WEB-INF/lib/itextpdf-5.5.6.jar:web/WEB-INF/lib/json.jar:web/WEB-INF/lib/commons-lang3-3.4.jar:web/WEB-INF/lib/commons-fileupload-1.3.1.jar:web/WEB-INF/lib/commons-io-2.4.jar:web/WEB-INF/lib/mockito-all-1.9.5.jar:web/WEB-INF/lib/asm-3.1.jar:web/WEB-INF/lib/cglib-2.2.jar:web/WEB-INF/lib/easymock-3.0.jar:web/WEB-INF/lib/javassist.jar:web/WEB-INF/lib/objenesis-2.2.jar:web/WEB-INF/lib/powermock-easymock-1.4.10-full.jar" />
     <property name="war.name" value="Autofill.war" />
     <property name="javadoc.private" value="false" />
+    <property name="file.reference.powermock-easymock-1.4.10-full.jar" value="web/WEB-INF/lib/powermock-easymock-1.4.10-full.jar" />
     <property name="test.src.dir" value="test" />
     <property name="libs.jsf20.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/jsf-2_2/javax.faces.jar" />
     <property name="ap.processors.internal" value="" />
@@ -283,11 +288,11 @@
     <property name="libs.javaee-api-6.0.maven-pom" value="" />
     <property name="libs.JWSAntTasks.src" value="" />
     <property name="libs.CopyLibs.maven-pom" value="" />
-    <property name="libs.spring-framework300.javadoc" value="" />
     <property name="libs.absolutelayout.javadoc" value="" />
+    <property name="libs.spring-framework300.javadoc" value="" />
     <property name="java.specification.name" value="Java Platform API Specification" />
-    <property name="nu.validator.spec.microsyntax-descriptions" value="jar:file:/Applications/NetBeans/NetBeans%208.0.2.app/Contents/Resources/NetBeans/ide/modules/ext/validator.jar!/nu/validator/localentities/files/wiki_whatwg_org_wiki_MicrosyntaxDescriptions" />
     <property name="no.dist.ear.dir" value="true" />
+    <property name="auxiliary.org-netbeans-modules-css-prep.sass_2e_compiler_2e_options" value="" />
     <property name="java.specification.vendor" value="Oracle Corporation" />
     <property name="libs.javac-api.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/nb-javac-api.jar" />
     <property name="java.version" value="1.8.0_51" />
@@ -313,23 +318,26 @@
     <property name="dist.javadoc.dir" value="dist/javadoc" />
     <property name="libs.spring-webmvc3.0.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-webmvc-3.2.7.RELEASE.jar" />
     <property name="libs.swing-layout.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar" />
+    <property name="file.reference.javassist.jar" value="web/WEB-INF/lib/javassist.jar" />
     <property name="jspc.dtds" value="/resources/dtds/" />
     <property name="libs.javaee-web-api-7.0.maven-pom" value="" />
     <property name="libs.restlib.src" value="" />
-    <property name="javac.source" value="1.8" />
     <property name="build.generated.dir" value="build/generated" />
+    <property name="javac.source" value="1.8" />
     <property name="line.separator" value="&#xa;" />
     <property name="java.specification.version" value="1.8" />
     <property name="java.vm.info" value="mixed mode" />
     <property name="libs.jaxws21.maven-pom" value="" />
+    <property name="file.reference.easymock-3.0.jar" value="web/WEB-INF/lib/easymock-3.0.jar" />
     <property name="nb.junit.batch" value="true" />
+    <property name="auxiliary.org-netbeans-modules-css-prep.sass_2e_enabled" value="false" />
     <property name="user.country.format" value="HK" />
     <property name="sun.boot.class.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/jre/classes" />
     <property name="javac.target" value="1.8" />
     <property name="build.test.classes.dir" value="build/test/classes" />
     <property name="src.dir" value="src/java" />
-    <property name="annotation.processing.enabled" value="true" />
     <property name="libs.jpa2-persistence.src" value="" />
+    <property name="annotation.processing.enabled" value="true" />
     <property name="libs.jsf20.src" value="" />
     <property name="libs.jpa20-persistence.src" value="" />
     <property name="libs.jsf12.src" value="" />
@@ -346,10 +354,11 @@
     <property name="java.awt.printerjob" value="sun.lwawt.macosx.CPrinterJob" />
     <property name="default.javac.source" value="1.8" />
     <property name="debug-transport-by-os" value="dt_socket" />
-    <property name="libs.MySQLDriver.src" value="" />
     <property name="sun.jnu.encoding" value="UTF-8" />
-    <property name="java.runtime.version" value="1.8.0_51-b16" />
+    <property name="libs.MySQLDriver.src" value="" />
+    <property name="auxiliary.org-netbeans-modules-css-prep.less_2e_mappings" value="/less:/css" />
     <property name="build.test.results.dir" value="build/test/results" />
+    <property name="java.runtime.version" value="1.8.0_51-b16" />
     <property name="jna.platform.library.path" value="/usr/lib:/usr/lib" />
     <property name="do.tmp.war.package.with.custom.manifest" value="true" />
     <property name="default.javac.target" value="1.8" />
@@ -357,20 +366,20 @@
     <property name="user.timezone" value="Asia/Hong_Kong" />
     <property name="nb.junit.single" value="false" />
     <property name="file.reference.commons-io-2.4.jar" value="web/WEB-INF/lib/commons-io-2.4.jar" />
-    <property name="libs.javaee-endorsed-api-6.0.maven-pom" value="" />
     <property name="libs.JAVADB_DRIVER_LABEL.javadoc" value="" />
+    <property name="libs.javaee-endorsed-api-6.0.maven-pom" value="" />
     <property name="netbeans.dirs" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/nb:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/ergonomics:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/ide:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/extide:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/apisupport:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/webcommon:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/websvccommon:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/mobility:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/profiler:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/python:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/php:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/identity:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/harness:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/cnd:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/dlight:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/groovy:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/extra:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/javacard:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/javafx:" />
-    <property name="libs.jsf20.javadoc" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/docs/javaee-doc-api.jar" />
     <property name="libs.jstl.javadoc" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/docs/javaee-doc-api.jar" />
+    <property name="libs.jsf20.javadoc" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/docs/javaee-doc-api.jar" />
     <property name="java.ext.dirs" value="/Users/Angus/Library/Java/Extensions:/Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/jre/lib/ext:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java" />
     <property name="libs.metro.src" value="" />
     <property name="endorsed.classpath" value="" />
     <property name="libs.absolutelayout.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/AbsoluteLayout.jar" />
     <property name="excludes" value="" />
-    <property name="libs.metro.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/ide/modules/ext/jaxb/activation.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/metro/webservices-api.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/metro/webservices-extra-api.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/metro/webservices-extra.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/metro/webservices-rt.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/metro/webservices-tools.jar" />
     <property name="libs.restlib.maven-pom" value="" />
+    <property name="libs.metro.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/ide/modules/ext/jaxb/activation.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/metro/webservices-api.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/metro/webservices-extra-api.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/metro/webservices-extra.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/metro/webservices-rt.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/metro/webservices-tools.jar" />
     <property name="libs.jpa2-persistence.javadoc" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/docs/javax.persistence-2.1.0-doc.zip" />
-    <property name="java.class.path" value="/Users/Angus/Documents/NetBeansProjects/Autofill/web/WEB-INF/lib/itextpdf-5.5.6.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/web/WEB-INF/lib/json.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/web/WEB-INF/lib/commons-lang3-3.4.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/web/WEB-INF/lib/commons-fileupload-1.3.1.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/web/WEB-INF/lib/commons-io-2.4.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/web/WEB-INF/lib/mockito-all-1.9.5.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/build/web/WEB-INF/classes:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/build/test/classes:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/annotations-api.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/catalina-ant.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/catalina-ha.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/catalina-tribes.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/catalina.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/ecj-4.3.1.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/el-api.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/jasper-el.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/jasper.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/jsp-api.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/servlet-api.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/tomcat-coyote.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/tomcat-dbcp.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/tomcat-i18n-es.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/tomcat-i18n-fr.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/tomcat-i18n-ja.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/bin/tomcat-juli.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/extide/ant/lib/ant-launcher.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/extide/ant/lib/ant.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/extide/ant/lib/ant-junit.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/extide/ant/lib/ant-junit4.jar:/Users/Angus/Library/Application Support/NetBeans/8.0.2/modules/ext/jacocoagent.jar" />
+    <property name="java.class.path" value="/Users/Angus/Documents/NetBeansProjects/Autofill/web/WEB-INF/lib/itextpdf-5.5.6.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/web/WEB-INF/lib/json.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/web/WEB-INF/lib/commons-lang3-3.4.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/web/WEB-INF/lib/commons-fileupload-1.3.1.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/web/WEB-INF/lib/commons-io-2.4.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/web/WEB-INF/lib/mockito-all-1.9.5.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/web/WEB-INF/lib/asm-3.1.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/web/WEB-INF/lib/cglib-2.2.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/web/WEB-INF/lib/easymock-3.0.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/web/WEB-INF/lib/javassist.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/web/WEB-INF/lib/objenesis-2.2.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/web/WEB-INF/lib/powermock-easymock-1.4.10-full.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/build/web/WEB-INF/classes:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar:/Users/Angus/Documents/NetBeansProjects/Autofill/build/test/classes:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/annotations-api.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/catalina-ant.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/catalina-ha.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/catalina-tribes.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/catalina.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/ecj-4.3.1.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/el-api.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/jasper-el.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/jasper.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/jsp-api.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/servlet-api.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/tomcat-coyote.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/tomcat-dbcp.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/tomcat-i18n-es.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/tomcat-i18n-fr.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/lib/tomcat-i18n-ja.jar:/Users/Angus/Documents/apache-tomcat-6.0.44/bin/tomcat-juli.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/extide/ant/lib/ant-launcher.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/extide/ant/lib/ant.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/extide/ant/lib/ant-junit.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/extide/ant/lib/ant-junit4.jar:/Users/Angus/Library/Application Support/NetBeans/8.0.2/modules/ext/jacocoagent.jar" />
     <property name="apple.laf.useScreenMenuBar" value="true" />
     <property name="libs.absolutelayout.src" value="" />
     <property name="libs.jpa20-persistence.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/eclipselink/javax.persistence_2.1.0.v201304241213.jar" />
@@ -382,8 +391,8 @@
     <property name="libs.hibernate4-persistence.src" value="" />
     <property name="libs.hibernate4-support.maven-pom" value="" />
     <property name="libs.Comet-GlassFish-v3.src" value="" />
-    <property name="libs.restlib.javadoc" value="" />
     <property name="war.content.additional" value="" />
+    <property name="libs.restlib.javadoc" value="" />
     <property name="libs.JAXB-ENDORSED.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/ide/modules/ext/jaxb/api/jaxb-api.jar" />
     <property name="j2ee.platform.embeddableejb.classpath" value="" />
     <property name="libs.javaee-api-7.0.javadoc" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/docs/javaee-doc-api.jar" />
@@ -396,24 +405,25 @@
     <property name="libs.spring-framework300.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/ide/modules/org-apache-commons-logging.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/cglib-2.2.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-aop-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-aspects-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-beans-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-build-src-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-context-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-context-support-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-core-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-expression-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-framework-bom-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-instrument-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-instrument-tomcat-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-jdbc-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-jms-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-orm-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-oxm-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-struts-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-test-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-tx-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-web-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-webmvc-3.2.7.RELEASE.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-webmvc-portlet-3.2.7.RELEASE.jar" />
     <property name="libs.jsp-compiler.maven-pom" value="" />
     <property name="libs.hibernate4-persistence.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/hibernate4/antlr-2.7.7.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/hibernate4/c3p0-0.9.2.1.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/hibernate4/hibernate-c3p0-4.3.1.Final.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/hibernate4/mchange-commons-java-0.2.3.4.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/hibernate4/dom4j-1.6.1.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/hibernate4/ehcache-core-2.4.3.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/hibernate4/hibernate-ehcache-4.3.1.Final.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/hibernate4/hibernate-core-4.3.1.Final.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/hibernate4/jboss-logging-3.1.3.GA.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/hibernate4/hibernate-commons-annotations-4.0.4.Final.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/hibernate4/hibernate-entitymanager-4.3.1.Final.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/hibernate4/javassist-3.18.1-GA.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/hibernate4/jboss-transaction-api_1.2_spec-1.0.0.Final.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/hibernate4/slf4j-api-1.6.1.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/hibernate4/slf4j-simple-1.6.1.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/hibernate4/hibernate-jpa-2.1-api-1.0.0.Final.jar" />
-    <property name="libs.JAXB-ENDORSED.src" value="" />
     <property name="dist.archive.excludes" value="" />
+    <property name="libs.JAXB-ENDORSED.src" value="" />
     <property name="libs.testng.javadoc" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/docs/testng-6.8.1-javadoc.zip" />
     <property name="libs.PostgreSQLDriver.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/ide/modules/ext/postgresql-9.2-1002.jdbc4.jar" />
     <property name="libs.jsf12.maven-pom" value="" />
     <property name="libs.hibernate4-persistencemodelgen.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/hibernate4/hibernate-jpamodelgen-4.3.1.Final.jar" />
     <property name="libs.junit.src" value="" />
     <property name="annotation.processing.source.output" value="build/generated-sources/ap-source-output" />
-    <property name="build.dir" value="build" />
     <property name="libs.CopyLibs.src" value="" />
+    <property name="build.dir" value="build" />
     <property name="libs.jsp-compilation.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/extide/ant/lib/ant.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/servlet3.1-jsp2.3-api.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/glassfish-jspparser-4.0.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/jsf-2_2/javax.faces.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/modules/ext/jstl-api.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/extide/ant/lib/ant-launcher.jar" />
     <property name="j2ee.platform.is.jsr109" value="true" />
     <property name="ant.version" value="Apache Ant(TM) version 1.9.4 compiled on April 29 2014" />
     <property name="selected.browser" value="default" />
-    <property name="file.encoding" value="UTF-8" />
     <property name="build.classes.excludes" value="**/*.java,**/*.form" />
+    <property name="file.encoding" value="UTF-8" />
     <property name="jdkBug6558476" value="false" />
     <property name="javadoc.nonavbar" value="false" />
+    <property name="auxiliary.org-netbeans-modules-css-prep.less_2e_compiler_2e_options" value="" />
     <property name="libs.spring-webmvc4.0.classpath" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/java/modules/ext/spring-4/spring-webmvc-4.0.1.RELEASE.jar" />
     <property name="platform.active" value="default_platform" />
     <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit" />
@@ -421,34 +431,102 @@
     <property name="file.reference.commons-lang3-3.4.jar" value="web/WEB-INF/lib/commons-lang3-3.4.jar" />
     <property name="libs.javaee-web-api-7.0.javadoc" value="/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/enterprise/docs/javaee-doc-api.jar" />
   </properties>
-  <testcase classname="Autofill.ControllerTest" name="testCreateFormList" time="0.081">
+  <testcase classname="Autofill.ControllerTest" name="testProcessRequest" time="0.187">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at Autofill.Controller.processRequest(Controller.java:36)
+	at Autofill.ControllerTest.testProcessRequest(ControllerTest.java:48)
+</error>
+  </testcase>
+  <testcase classname="Autofill.ControllerTest" name="testDoGet" time="0.007">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at Autofill.Controller.processRequest(Controller.java:36)
+	at Autofill.Controller.doGet(Controller.java:116)
+	at Autofill.ControllerTest.testDoGet(ControllerTest.java:62)
+</error>
+  </testcase>
+  <testcase classname="Autofill.ControllerTest" name="testDoPost" time="0.039">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at Autofill.Controller.processRequest(Controller.java:36)
+	at Autofill.Controller.doPost(Controller.java:122)
+	at Autofill.ControllerTest.testDoPost(ControllerTest.java:76)
+</error>
+  </testcase>
+  <testcase classname="Autofill.ControllerTest" name="testRegister" time="1.089">
+    <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
+	at Autofill.ControllerTest.testRegister(ControllerTest.java:91)
+Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:422)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:400)
+	at com.mysql.jdbc.SQLError.createCommunicationsException(SQLError.java:1038)
+	at com.mysql.jdbc.MysqlIO.&lt;init&gt;(MysqlIO.java:339)
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2247)
+	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2280)
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2079)
+	at com.mysql.jdbc.ConnectionImpl.&lt;init&gt;(ConnectionImpl.java:794)
+	at com.mysql.jdbc.JDBC4Connection.&lt;init&gt;(JDBC4Connection.java:44)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:422)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:400)
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:399)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:325)
+	at java.sql.DriverManager.getConnection(DriverManager.java:664)
+	at java.sql.DriverManager.getConnection(DriverManager.java:247)
+	at Autofill.DBUtil.getDBConnection(DBUtil.java:29)
+	at Autofill.AccountManager.register(AccountManager.java:72)
+	at Autofill.Controller.register(Controller.java:132)
+Caused by: java.net.ConnectException: Connection refused
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:345)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:214)
+	at com.mysql.jdbc.MysqlIO.&lt;init&gt;(MysqlIO.java:298)
+</error>
+  </testcase>
+  <testcase classname="Autofill.ControllerTest" name="testLogin" time="0.078">
+    <error type="java.lang.reflect.InvocationTargetException">java.lang.reflect.InvocationTargetException
+	at Autofill.ControllerTest.testLogin(ControllerTest.java:107)
+Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:422)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:400)
+	at com.mysql.jdbc.SQLError.createCommunicationsException(SQLError.java:1038)
+	at com.mysql.jdbc.MysqlIO.&lt;init&gt;(MysqlIO.java:339)
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2247)
+	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2280)
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2079)
+	at com.mysql.jdbc.ConnectionImpl.&lt;init&gt;(ConnectionImpl.java:794)
+	at com.mysql.jdbc.JDBC4Connection.&lt;init&gt;(JDBC4Connection.java:44)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:422)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:400)
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:399)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:325)
+	at java.sql.DriverManager.getConnection(DriverManager.java:664)
+	at java.sql.DriverManager.getConnection(DriverManager.java:247)
+	at Autofill.DBUtil.getDBConnection(DBUtil.java:29)
+	at Autofill.AccountManager.authenticate(AccountManager.java:36)
+	at Autofill.Controller.login(Controller.java:142)
+Caused by: java.net.ConnectException: Connection refused
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:345)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:214)
+	at com.mysql.jdbc.MysqlIO.&lt;init&gt;(MysqlIO.java:298)
+</error>
+  </testcase>
+  <testcase classname="Autofill.ControllerTest" name="testCreateFormList" time="0.007">
     <error message="Autofill.Controller.createFormList()" type="java.lang.NoSuchMethodException">java.lang.NoSuchMethodException: Autofill.Controller.createFormList()
 	at java.lang.Class.getDeclaredMethod(Class.java:2130)
 	at Autofill.ControllerTest.testCreateFormList(ControllerTest.java:116)
 </error>
   </testcase>
-  <testcase classname="Autofill.ControllerTest" name="testProcessRequest" time="0.008">
-    <error type="java.lang.NullPointerException">java.lang.NullPointerException
-	at Autofill.Controller.processRequest(Controller.java:38)
-	at Autofill.ControllerTest.testProcessRequest(ControllerTest.java:48)
-</error>
-  </testcase>
-  <testcase classname="Autofill.ControllerTest" name="testDoGet" time="0.002">
-    <error type="java.lang.NullPointerException">java.lang.NullPointerException
-	at Autofill.Controller.processRequest(Controller.java:38)
-	at Autofill.Controller.doGet(Controller.java:114)
-	at Autofill.ControllerTest.testDoGet(ControllerTest.java:62)
-</error>
-  </testcase>
-  <testcase classname="Autofill.ControllerTest" name="testDoPost" time="0.001">
-    <error type="java.lang.NullPointerException">java.lang.NullPointerException
-	at Autofill.Controller.processRequest(Controller.java:38)
-	at Autofill.Controller.doPost(Controller.java:120)
-	at Autofill.ControllerTest.testDoPost(ControllerTest.java:76)
-</error>
-  </testcase>
-  <testcase classname="Autofill.ControllerTest" name="testRegister" time="1.033" />
-  <testcase classname="Autofill.ControllerTest" name="testLogin" time="0.052" />
   <system-out><![CDATA[processRequest
 doGet
 doPost

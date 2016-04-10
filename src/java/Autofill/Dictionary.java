@@ -1,19 +1,14 @@
 package Autofill;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
 public class Dictionary {
     
     private static Dictionary instance;
-    private static final String DBURL = "jdbc:mysql://127.0.0.1:3307/Autofill";
-    private static final String DBUsername = "root";
-    private static final String DBPassword = "admin";
     
     public static Dictionary getInstance() {
         if (instance == null) {
@@ -32,10 +27,11 @@ public class Dictionary {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         
+        DBUtil dbUtil = DBUtil.getInstance();
         try {
             String standard = getStandardWord(word);
 
-            con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
+            con = dbUtil.getDBConnection();
             pstmt = con.prepareStatement(
                 "SELECT synonym FROM Dictionary WHERE standard = ? OR standard = ? ORDER BY probability"
             );
@@ -48,13 +44,7 @@ public class Dictionary {
         } catch (SQLException e) {
             throw e;
         } finally {
-            try {
-                if (rs != null) {rs.close();}
-                if (pstmt != null) {pstmt.close();}
-                if (con != null) {con.close();}
-            } catch (SQLException e) {
-                throw e;
-            }
+            dbUtil.closeDBObjects(con, pstmt, rs);
         }
 
         return synonyms;
@@ -66,8 +56,9 @@ public class Dictionary {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         
+        DBUtil dbUtil = DBUtil.getInstance();
         try {
-            con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
+            con = dbUtil.getDBConnection();
             pstmt = con.prepareStatement(
                 "SELECT standard FROM Dictionary WHERE synonym = ? ORDER BY probability"
             );
@@ -79,13 +70,7 @@ public class Dictionary {
         } catch (SQLException e) {
             throw e;
         } finally {
-            try {
-                if (rs != null) {rs.close();}
-                if (pstmt != null) {pstmt.close();}
-                if (con != null) {con.close();}
-            } catch (SQLException e) {
-                throw e;
-            } 
+            dbUtil.closeDBObjects(con, pstmt, rs);
         }
         
         return standard;
@@ -99,16 +84,15 @@ public class Dictionary {
         
         for (int i=word.length()-1; i>0; i--) {
             if (!Character.isDigit(word.charAt(i)) && word.charAt(i)!='_') {
-                //System.out.print(word + " ");
                 word = word.substring(0, i+1);
                 samePrefixWords.add(word.toLowerCase());
-                //System.out.println(word);
                 break;
             }
         }
         
+        DBUtil dbUtil = DBUtil.getInstance();
         try {
-            con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
+            con = dbUtil.getDBConnection();
             // Create search key
             StringBuilder strBuilder = new StringBuilder(word);
             strBuilder.insert(word.length(), "%");
@@ -139,13 +123,7 @@ public class Dictionary {
         } catch (SQLException e)    {
             throw e;
         } finally {
-            try {
-                if (rs != null) {rs.close();}
-                if (pstmt != null) {pstmt.close();}
-                if (con != null) {con.close();}
-            } catch (Exception e) {
-                throw e;
-            }
+            dbUtil.closeDBObjects(con, pstmt, rs);
         }
         
         return samePrefixWords;
@@ -157,8 +135,9 @@ public class Dictionary {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         
+        DBUtil dbUtil = DBUtil.getInstance();
         try {
-            con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
+            con = dbUtil.getDBConnection();
             pstmt = con.prepareStatement(
                 "INSERT INTO Dictionary VALUES (?, ?, ?, ?)"
             );
@@ -167,20 +146,14 @@ public class Dictionary {
             pstmt.setFloat(3, 0.5f);
             pstmt.setString(4, "[{\"word1\": \"" + word1 + "\", \"word2\": \"" + word2 + "\", \"probability\": \"0.5\"}]");
             pstmt.executeUpdate();
-            System.out.println(pstmt);
             
             successful = true;
         } catch (SQLException e) {
             throw e;
         } finally {
-            try {
-                if (rs != null) {rs.close();}
-                if (pstmt != null) {pstmt.close();}
-                if (con != null) {con.close();}
-            } catch (SQLException e) {
-                throw e;
-            }
+            dbUtil.closeDBObjects(con, pstmt, rs);
         }
+        
         return successful;
     }
     
@@ -190,26 +163,20 @@ public class Dictionary {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         
+        DBUtil dbUtil = DBUtil.getInstance();
         try {
-            con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
+            con = dbUtil.getDBConnection();
             pstmt = con.prepareStatement(
                 "DELETE FROM Dictionary WHERE standard = ? AND synonym = ?"
             );
             pstmt.setString(1, word1);
             pstmt.setString(2, word2);
-            System.out.println(pstmt);
             pstmt.executeUpdate();
             successful = true;
         } catch (SQLException e) {
             throw e;
         } finally {
-            try {
-                if (rs != null) {rs.close();}
-                if (pstmt != null) {pstmt.close();}
-                if (con != null) {con.close();}
-            } catch (SQLException e) {
-                throw e;
-            }
+            dbUtil.closeDBObjects(con, pstmt, rs);
         }
         
         return successful;
@@ -217,13 +184,14 @@ public class Dictionary {
     
     public boolean addProbability(String word1, String word2) throws SQLException {
         boolean adjusted = false;
-        Float adjustment = 0.1f;
+        Float adjustment = 0.01f;
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
  
+        DBUtil dbUtil = DBUtil.getInstance();
         try {
-            con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
+            con = dbUtil.getDBConnection();
             pstmt = con.prepareStatement(
                 "SELECT probability, history FROM Dictionary WHERE standard = ? AND synonym = ?"
             );                      
@@ -232,8 +200,8 @@ public class Dictionary {
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 float probability = rs.getFloat("probability");
-                String history = rs.getString("history");
-                probability = Math.min(1, Math.round((probability + adjustment)*10)/10);
+                String history = rs.getString("history");      
+                probability = Math.min(1, (float)Math.round((probability + adjustment)*100)/100);
                 String newHistory = addHistory(history, formatHistoryRecord(word1, word2, probability));
                 pstmt = con.prepareStatement(
                     "UPDATE Dictionary SET probability = ?, history = ? WHERE standard = ? AND synonym = ?"    
@@ -253,13 +221,11 @@ public class Dictionary {
                 ); 
                 pstmt.setString(1, word2);
                 pstmt.setString(2, word1);
-                System.out.println("TEST4 - " + pstmt);
                 rs = pstmt.executeQuery();
                 if (rs.next()) {
-                    System.out.println("TEST4");
                     float probability = rs.getFloat("probability");
                     String history = rs.getString("history");
-                    probability = Math.min(1, Math.round((probability + adjustment)*10)/10);
+                    probability = Math.min(1, (float)Math.round((probability + adjustment)*100)/100);
                     String newHistory = addHistory(history, formatHistoryRecord(word2, word1, probability));
                     pstmt = con.prepareStatement(
                         "UPDATE Dictionary SET probability = ?, history = ? WHERE standard = ? AND synonym = ?"    
@@ -268,7 +234,6 @@ public class Dictionary {
                     pstmt.setString(2, newHistory);
                     pstmt.setString(3, word2);
                     pstmt.setString(4, word1);
-                    System.out.println(pstmt);
                     pstmt.executeUpdate();
                     adjusted = true;
                 }
@@ -289,11 +254,11 @@ public class Dictionary {
                     standard = rs.getString("standard");
                     history = rs.getString("history");
                     probability = rs.getFloat("probability");
-                    probability = Math.min(1, (float)(Math.round((probability + adjustment)*10))/10);
+                    probability = Math.min(1, (float)Math.round((probability + adjustment)*100)/100);
 
                     String newHistory = addHistory(history, formatHistoryRecord(word1, word2, probability));
                     pstmt = con.prepareStatement(
-                        "UPDATE Dictionary SET probability = ROUND(LEAST(1, probability + 0.1), 1), history = ? WHERE standard = ? AND (synonym = ? OR synonym = ?)"
+                        "UPDATE Dictionary SET probability = ROUND(LEAST(1, probability + 0.01), 2), history = ? WHERE standard = ? AND (synonym = ? OR synonym = ?)"
                     ); 
                     pstmt.setString(1, newHistory);
                     pstmt.setString(2, standard);
@@ -306,28 +271,22 @@ public class Dictionary {
         } catch (SQLException e) {
             throw e;
         } finally {
-            try {
-                if (rs != null) {rs.close();}
-                if (pstmt != null) {pstmt.close();}
-                if (con != null) {con.close();}
-            } catch (SQLException e) {
-                throw e;
-            }
+            dbUtil.closeDBObjects(con, pstmt, rs);
         }
+        
         return adjusted;
-        //End
     }
     
     public boolean reduceProbability(String word1, String word2) throws SQLException {
-        //Start
         boolean adjusted = false;
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        float adjustment = -0.1f;
+        float adjustment = -0.01f;
         
+        DBUtil dbUtil = DBUtil.getInstance();
         try {
-            con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
+            con = dbUtil.getDBConnection();
             pstmt = con.prepareStatement(
                 "SELECT probability, history FROM Dictionary WHERE standard = ? AND synonym = ?"
             );
@@ -337,7 +296,7 @@ public class Dictionary {
             if (rs.next()) {
                 float probability = rs.getFloat("probability");
                 String history = rs.getString("history");
-                probability = Math.max(0, (float)(Math.round((probability + adjustment)*10))/10);
+                probability = Math.max(0, (float)(Math.round((probability + adjustment)*100))/100);
                 if (probability == 0) {
                     removeSynonym(word1, word2);
                 } else {
@@ -366,7 +325,7 @@ public class Dictionary {
                 if (rs.next()) {
                     float probability = rs.getFloat("probability");
                     String history = rs.getString("history");
-                    probability = Math.max(0, (float)(Math.round((probability + adjustment)*10))/10);
+                    probability = Math.max(0, (float)(Math.round((probability + adjustment)*100))/100);
                     if (probability == 0) {
                         // Remove entry
                         removeSynonym(word2, word1);
@@ -393,7 +352,6 @@ public class Dictionary {
                 );
                 pstmt.setString(1, word1);
                 pstmt.setString(2, word2);
-                System.out.println("TEST7 - " + pstmt);
                 rs = pstmt.executeQuery();
                 String standard;
                 String history;
@@ -402,20 +360,19 @@ public class Dictionary {
                     standard = rs.getString("standard");
                     history = rs.getString("history");
                     probability = rs.getFloat("probability");
-                    probability = (float)(Math.round((probability - 0.1f)*10))/10;
+                    probability = (float)(Math.round((probability + adjustment)*100))/100;
                     if (probability == 0) {
                         //remove entry
                         removeSynonym(standard, word1);
                     } else {
                         String newHistory = addHistory(history, formatHistoryRecord(word1, word2, probability));
                         pstmt = con.prepareStatement(
-                            "UPDATE Dictionary SET probability = ROUND(LEAST(1, probability - 0.1), 1), history = ? WHERE standard = ? AND (synonym = ? OR synonym = ?)" //need separated update
+                            "UPDATE Dictionary SET probability = ROUND(LEAST(1, probability - 0.01), 2), history = ? WHERE standard = ? AND (synonym = ? OR synonym = ?)" //need separated update
                         ); 
                         pstmt.setString(1, newHistory);
                         pstmt.setString(2, standard);
                         pstmt.setString(3, word1);
                         pstmt.setString(4, word2);
-                        //System.out.println("TEST6 - " + pstmt);
                         pstmt.executeUpdate();
                     }
                     adjusted = true;
@@ -425,13 +382,7 @@ public class Dictionary {
         } catch (SQLException e) {
             throw e;
         } finally {
-            try {
-                if (rs != null) {rs.close();}
-                if (pstmt != null) {pstmt.close();}
-                if (con != null) {con.close();}
-            } catch (SQLException e) {
-                throw e;
-            }
+            dbUtil.closeDBObjects(con, pstmt, rs);
         }
         
         return adjusted;
@@ -443,8 +394,9 @@ public class Dictionary {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         
+        DBUtil dbUtil = DBUtil.getInstance();
         try {
-            con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
+            con = dbUtil.getDBConnection();
             pstmt = con.prepareStatement(
                 "SELECT standard, synonym, history FROM Dictionary ORDER BY standard"
             );
@@ -463,13 +415,7 @@ public class Dictionary {
         } catch (SQLException e) {
             throw e;
         } finally {
-            try {
-                if (rs != null) {rs.close();}
-                if (pstmt != null) {pstmt.close();}
-                if (con != null) {con.close();}
-            } catch (SQLException e) {
-                throw e;
-            }
+            dbUtil.closeDBObjects(con, pstmt, rs);
         }
         
         return statistics;

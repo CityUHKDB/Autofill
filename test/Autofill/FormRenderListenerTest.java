@@ -36,7 +36,7 @@ public class FormRenderListenerTest {
     }
 
     // Test reset
-    public void textReset() {
+    public void testReset() {
         ArrayList<FormText> formText;
         FormRenderListener listener = new FormRenderListener();
         formText = listener.getFormText();

@@ -1,7 +1,6 @@
 package Autofill;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,9 +10,6 @@ import java.util.ArrayList;
 public class FormManager {
 
     private static FormManager instance;
-    private static final String DBURL = "jdbc:mysql://127.0.0.1:3307/Autofill";
-    private static final String DBUsername = "root";
-    private static final String DBPassword = "admin";
     
     private FormManager() {
         
@@ -30,10 +26,10 @@ public class FormManager {
         boolean successful = false;
         Connection con = null;
         PreparedStatement pstmt = null;
-        ResultSet rs = null;
         
+        DBUtil dbUtil = DBUtil.getInstance();
         try {
-            con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
+            con = dbUtil.getDBConnection();
             pstmt = con.prepareStatement(
                 "DELETE FROM Form WHERE name = ?"
             );
@@ -41,15 +37,9 @@ public class FormManager {
             pstmt.executeUpdate();
             successful = true;
         } catch (SQLException e) {
-            //throw e;
+            throw e;
         } finally {
-            try {
-                if (rs != null) {rs.close();}
-                if (pstmt != null) {pstmt.close();}
-                if (con != null) {con.close();}
-            } catch (SQLException e) {
-                throw e;
-            }
+            dbUtil.closeDBObjects(con, pstmt, null);
         }
         return successful;
     }
@@ -57,9 +47,10 @@ public class FormManager {
     public boolean addForm(String fileName) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        
+        DBUtil dbUtil = DBUtil.getInstance();
         try {
-            con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
+            con = dbUtil.getDBConnection();
             //Store file information to database
             pstmt = con.prepareStatement(
                 "INSERT INTO Form VALUES (?, ?)"
@@ -68,15 +59,9 @@ public class FormManager {
             pstmt.setString(2, fileName.substring(0, fileName.lastIndexOf('.')));
             pstmt.executeUpdate();
         } catch (Exception e) {
-            return false;
+            throw e;
         } finally {
-            try {
-                if (rs != null) {rs.close();}
-                if (pstmt != null) {pstmt.close();}
-                if (con != null) {con.close();}
-            } catch (SQLException e) {
-                throw e;
-            }
+            dbUtil.closeDBObjects(con, pstmt, null);
         }
 
         return true;
@@ -89,8 +74,9 @@ public class FormManager {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         
+        DBUtil dbUtil = DBUtil.getInstance();
         try {
-            con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
+            con = dbUtil.getDBConnection();
             pstmt = con.prepareStatement(
                 "SELECT * FROM Form ORDER BY name"
             );
@@ -104,13 +90,7 @@ public class FormManager {
         } catch (SQLException e) {
             throw e;
         } finally {
-            try {
-                if (rs != null) {rs.close();}
-                if (pstmt != null) {pstmt.close();}
-                if (con != null) {con.close();}
-            } catch (SQLException e) {
-                throw e;
-            }
+            dbUtil.closeDBObjects(con, pstmt, rs);
         }
         
         return formList;

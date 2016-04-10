@@ -1,8 +1,8 @@
 google.charts.load("current", {packages: ["corechart", "line"]});
-//google.charts.setOnLoadCallback(drawBackgroundColor);
 
 pageLoad = function() {
 	$("#tabArea").tabs();
+	google.charts.setOnLoadCallback(displayStatistics);
 }
 
 displayStatistics = function() {

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>StructureAnalyser.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Autofill&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">Autofill</a> &gt; <span class="el_source">StructureAnalyser.java</span></div><h1>StructureAnalyser.java</h1><pre class="source lang-java linenums">package Autofill;
+
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.parser.FilteredTextRenderListener;
+import com.itextpdf.text.pdf.parser.LocationTextExtractionStrategy;
+import com.itextpdf.text.pdf.parser.PdfTextExtractor;
+import com.itextpdf.text.pdf.parser.RegionTextRenderFilter;
+import com.itextpdf.text.pdf.parser.RenderFilter;
+import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class StructureAnalyser {
+  
+    private static StructureAnalyser instance;
+    
+<span class="fc" id="L20">    private StructureAnalyser() {</span>
+        
+<span class="fc" id="L22">    }</span>
+    
+    public static StructureAnalyser getInstance() {
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (instance == null) {</span>
+<span class="fc" id="L26">            instance = new StructureAnalyser();</span>
+        }
+<span class="fc" id="L28">        return instance;</span>
+    }
+    
+    public ArrayList&lt;AcroFormField&gt; analyse(PdfReader reader) throws IOException {
+<span class="nc" id="L32">        ArrayList&lt;AcroFormField&gt; fieldList = new ArrayList&lt;&gt;();</span>
+        
+<span class="nc" id="L34">        AcroFields form = reader.getAcroFields();</span>
+<span class="nc" id="L35">        ArrayList&lt;String&gt; fields = new ArrayList&lt;&gt;(form.getFields().keySet());</span>
+                
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        for (String key : fields) {</span>
+<span class="nc" id="L38">            AcroFormField acroField = new AcroFormField();</span>
+<span class="nc" id="L39">            acroField.setFieldName(key);</span>
+<span class="nc" id="L40">            acroField.setPage(form.getFieldPositions(key).get(0).page);</span>
+<span class="nc" id="L41">            acroField.setPosition(form.getFieldPositions(key).get(0).position);</span>
+<span class="nc" id="L42">            fieldList.add(acroField);</span>
+<span class="nc" id="L43">        }</span>
+        
+        RenderFilter filter;
+        TextExtractionStrategy strategy;
+        Rectangle targetArea;
+<span class="nc" id="L48">        Collections.sort(fieldList);</span>
+<span class="nc" id="L49">        AcroFormField currentField = null;</span>
+<span class="nc" id="L50">        AcroFormField previousField = null;</span>
+<span class="nc" id="L51">        String group = null;</span>
+<span class="nc" id="L52">        String preGroup = null;</span>
+<span class="nc" id="L53">        int groupCount = 1;</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        for (int i=0; i&lt;fieldList.size(); i++) {</span>
+<span class="nc" id="L55">            currentField = fieldList.get(i);</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">            if (form.getFieldType(currentField.getFieldName()) == AcroFields.FIELD_TYPE_TEXT) {</span>
+<span class="nc bnc" id="L57" title="All 4 branches missed.">                if (i&gt;0 &amp;&amp; isSameLinePreviousField(currentField.getPosition(), previousField.getPosition())) {</span>
+<span class="nc" id="L58">                    targetArea = new Rectangle(</span>
+<span class="nc" id="L59">                        previousField.getPosition().getRight(), // Lower left x</span>
+<span class="nc" id="L60">                        currentField.getPosition().getBottom(), // Lower left y</span>
+<span class="nc" id="L61">                        currentField.getPosition().getLeft(),   // Upper right x</span>
+<span class="nc" id="L62">                        currentField.getPosition().getTop()     // Upper right y</span>
+                    );
+                } else {
+<span class="nc" id="L65">                    targetArea = new Rectangle(</span>
+                        0,                                      // lower left x
+<span class="nc" id="L67">                        currentField.getPosition().getBottom(), // Lower left y</span>
+<span class="nc" id="L68">                        currentField.getPosition().getLeft(),   // Upper right x</span>
+<span class="nc" id="L69">                        currentField.getPosition().getTop()     // Upper right y</span>
+                    );                    
+                }
+<span class="nc" id="L72">                filter = new RegionTextRenderFilter(targetArea);</span>
+<span class="nc" id="L73">                strategy = new FilteredTextRenderListener(new LocationTextExtractionStrategy(), filter);</span>
+<span class="nc" id="L74">                currentField.setFieldValue(form.getField(currentField.getFieldName()));</span>
+<span class="nc" id="L75">                String fieldLabel = PdfTextExtractor.getTextFromPage(reader, currentField.getPage(), strategy);</span>
+<span class="nc" id="L76">                fieldLabel = fieldLabel.replace(&quot;:&quot;, &quot;&quot;);</span>
+<span class="nc" id="L77">                fieldLabel = fieldLabel.replace(&quot;_&quot;, &quot;&quot;);</span>
+<span class="nc" id="L78">                fieldLabel = fieldLabel.replace(&quot;\n&quot;, &quot; &quot;);</span>
+<span class="nc" id="L79">                fieldLabel = fieldLabel.trim();</span>
+<span class="nc" id="L80">                currentField.setFieldLabel(fieldLabel); </span>
+            }
+            
+<span class="nc bnc" id="L83" title="All 6 branches missed.">            if (i&gt;0 &amp;&amp; (isNewSection(currentField.getPosition(), previousField.getPosition()) || currentField.getPage() != previousField.getPage())) {</span>
+<span class="nc" id="L84">                targetArea = new Rectangle(</span>
+                    0,                                          // lower left x
+<span class="nc" id="L86">                    currentField.getPosition().getTop(),        // Lower left y</span>
+<span class="nc" id="L87">                    currentField.getPosition().getRight(),      // Upper right x</span>
+<span class="nc" id="L88">                    currentField.getPosition().getTop()+currentField.getPosition().getHeight()      // Upper right y</span>
+                );
+<span class="nc" id="L90">                filter = new RegionTextRenderFilter(targetArea);</span>
+<span class="nc" id="L91">                strategy = new FilteredTextRenderListener(new LocationTextExtractionStrategy(), filter);</span>
+<span class="nc" id="L92">                String tempGroup = PdfTextExtractor.getTextFromPage(reader, currentField.getPage(), strategy);</span>
+<span class="nc" id="L93">                tempGroup = tempGroup.replace(&quot;_&quot;, &quot;&quot;);</span>
+                
+<span class="nc bnc" id="L95" title="All 2 branches missed.">                if (!tempGroup.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L96">                    group = tempGroup.split(&quot;\\(&quot;)[0].trim();</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">                    if (group.split(&quot; &quot;).length &gt; 4) {</span>
+<span class="nc" id="L98">                        group = &quot;Other&quot;;</span>
+<span class="nc" id="L99">                        preGroup = group;</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">                    } else if (!group.equals(preGroup)) {</span>
+                        // New group name, reset counter
+<span class="nc" id="L102">                        groupCount = 1;</span>
+<span class="nc" id="L103">                        preGroup = group;</span>
+                    } else {
+                        // Group name same as previous group, adjust group name and increase counter
+<span class="nc" id="L106">                        groupCount++;</span>
+<span class="nc" id="L107">                        group = group + &quot; &quot; + groupCount;</span>
+                    }
+                }
+            }
+<span class="nc" id="L111">            currentField.setGroup(group);</span>
+<span class="nc" id="L112">            previousField = fieldList.get(i);</span>
+        }
+                
+<span class="nc" id="L115">        return fieldList;</span>
+    }
+            
+    private boolean isSameLinePreviousField(Rectangle curFieldPosition, Rectangle preFieldPosition) {
+<span class="pc bpc" id="L119" title="1 of 4 branches missed.">        return isOnRight(curFieldPosition, preFieldPosition) &amp;&amp; isOnSameLine(curFieldPosition, preFieldPosition);</span>
+    }
+    
+    private boolean isOnRight(Rectangle curFieldPosition, Rectangle preFieldPosition) {
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        return curFieldPosition.getLeft() &gt; preFieldPosition.getRight();</span>
+    }
+    
+    private boolean isOnSameLine(Rectangle curFieldPosition, Rectangle preFieldPosition) {
+<span class="fc" id="L127">        double dy = curFieldPosition.getTop()-preFieldPosition.getTop();</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        return  dy &lt; curFieldPosition.getHeight();</span>
+    }
+    
+    private boolean isNewSection(Rectangle curFieldPosition, Rectangle preFieldPosition) {
+<span class="pc bpc" id="L132" title="1 of 4 branches missed.">        return !isOnRight(curFieldPosition, preFieldPosition) &amp;&amp; isSeperated(curFieldPosition, preFieldPosition);         </span>
+    }
+    
+    private boolean isSeperated(Rectangle curFieldPosition, Rectangle preFieldPosition) {
+<span class="fc" id="L136">        double dy = preFieldPosition.getBottom()-curFieldPosition.getTop();</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">        return dy &gt; curFieldPosition.getHeight();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

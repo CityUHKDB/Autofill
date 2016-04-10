@@ -27,9 +27,6 @@ public class Controller extends HttpServlet {
     // upload settings
     private static final String FORM_DIRECTORY = "form";
     private static final String IMPORT_DIRECTORY = "import";
-    private static final String DBURL = "jdbc:mysql://127.0.0.1:3307/Autofill";
-    private static final String DBUsername = "root";
-    private static final String DBPassword = "admin";
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -37,68 +34,79 @@ public class Controller extends HttpServlet {
         
         String addr;
         HttpSession session = request.getSession(true);
-        //ps -ef | grep mysql
         
         try {
             String page = request.getParameter("page");
+            User user = (User)session.getAttribute("user");
             if (page == null) {
                 addr = "home.jsp";
             } else {
-                switch (page) {
-                    case "register":
-                        if (register(request)) {
+                if (user == null) {
+                    switch (page) {
+                        case "register":
+                            register(request);
                             addr = "home.jsp";
-                        } else {
-                            addr = "register.jsp";
-                        }
-                        break;
-                    case "login":
-                        if (login(request)) {
+                            break;
+                        case "login":
+                            login(request);
                             addr = "home.jsp";
-                        } else {
+                            break;
+                        default:
                             addr = "home.jsp";
-                        }
-                        break;
-                    case "logout":
-                        session.setAttribute("user", null);
-                        addr = "home.jsp";
-                        break;
-                    case "record":
-                        addr = "record.jsp";
-                        break;
-                    case "import":
-                        importData(request);
-                        addr = "record.jsp";
-                        break;
-                    case "save":
-                        String data = (String)session.getAttribute("data");
-                        System.out.println(data);
-                        addr = "record.jsp";
-                        break;
-                    case "fill":
-                        session.setAttribute("formList", FormManager.getInstance().getFormList());
-                        addr = "fill.jsp";
-                        break;
-                    case "process":
-                        toProcessPage(request);
-                        addr = "process.jsp";
-                        break;
-                    case "result":
-                        toResultPage(request);
-                        addr = "result.jsp";
-                        break;
-                    case "manage":
-                        toManagePage(request);
-                        addr = "manage.jsp";
-                        break;
-                    case "statistics":
-                        session.setAttribute("statistics", Dictionary.getInstance().getHistory());
-                        addr = "statistics.jsp";
-                        break;
-                    default:
-                        addr = "home.jsp";
-                        break;
-                }            
+                            break;
+                    }                   
+                } else if (user.getRole().equals("member")) {
+                    switch (page) {
+                       case "logout":
+                           session.setAttribute("user", null);
+                           addr = "home.jsp";
+                           break;
+                        case "record":
+                            addr = "record.jsp";
+                            break;
+                        case "import":
+                            importData(request);
+                            addr = "record.jsp";
+                            break;
+                        case "save":
+                            addr = "record.jsp";
+                            break;
+                        case "fill":
+                            session.setAttribute("formList", FormManager.getInstance().getFormList());
+                            addr = "fill.jsp";
+                            break;
+                        case "process":
+                            toProcessPage(request);
+                            addr = "process.jsp";
+                            break;
+                        case "result":
+                            toResultPage(request);
+                            addr = "result.jsp";
+                            break; 
+                        default:
+                            addr = "home.jsp";
+                            break;
+                    }
+                } else {
+                    switch (page) {
+                        case "logout":
+                            session.setAttribute("user", null);
+                            addr = "home.jsp";
+                            break;
+                        case "manage":
+                            toManagePage(request);
+                            addr = "manage.jsp";
+                            break;
+                        case "statistics":
+                            session.setAttribute("statistics", Dictionary.getInstance().getHistory());
+                            addr = "statistics.jsp";
+                            break;
+                        default:
+                            addr = "home.jsp";
+                            break;
+                    }                               
+                }
+ 
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,13 +159,15 @@ public class Controller extends HttpServlet {
 
     private void toProcessPage(HttpServletRequest request) throws IOException, FileUploadException, DocumentException, JSONException, Exception {
         String filepath = request.getParameter("formPath");
-        System.out.println(filepath);
         if (filepath == null) {
+            // Upload form
             FileUploader uploader = FileUploader.getInstance();
             String directory = getServletContext().getRealPath(FORM_DIRECTORY);
             filepath = uploader.upload(request, directory, null);
+            // Add form to database
+            FormManager formManager = FormManager.getInstance();
+            formManager.addForm(filepath);
         } 
-        System.out.println(filepath);
         User user = ((User)request.getSession().getAttribute("user"));
         FormFiller filler = new FormFiller(getServletContext().getRealPath(FORM_DIRECTORY + File.separator + filepath));
 
@@ -183,14 +193,12 @@ public class Controller extends HttpServlet {
         for (AcroFormField field : fields) {
             if (field.getFieldLabel() != null && field.getFieldLabel().length() != 0) {
                 String option = field.getFieldName() + "_option";
-                System.out.println(option);
                 if (request.getParameter(option) != null) {
                     if (!request.getParameter(option).equals("")) {
                         if (form.getField(field.getFieldName()).equals("")) {
                             // Add synonym to dictionary
                             String personalFieldName = request.getParameter(field.getFieldName() + "_personalFieldName");
                             dictionary.addSynonym(personalFieldName, field.getFieldName().toLowerCase());
-                            System.out.println(personalFieldName + " " + field.getFieldName());
                         } else if (!form.getField(field.getFieldName()).equals(request.getParameter(field.getFieldName()))) {
                             // Reduce synonym's probability in dictionary
                             dictionary.reduceProbability(field.getPersonalFieldName(), field.getFieldName().toLowerCase());
@@ -219,7 +227,7 @@ public class Controller extends HttpServlet {
         stamper.close();
         reader.close();
 
-        session.setAttribute("filepath", request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getRequestURI() + "/" + FORM_DIRECTORY + File.separator + user.getUsername() + ".pdf");
+        session.setAttribute("filepath", request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getRequestURI() + "/" + FORM_DIRECTORY + File.separator + "result.pdf");
     }
     
     private void toManagePage(HttpServletRequest request) throws SQLException {
@@ -245,6 +253,7 @@ public class Controller extends HttpServlet {
         
         HttpSession session = request.getSession();
         
+        DBUtil dbUtil = DBUtil.getInstance();
         try {
         // if user have logined
             if (session.getAttribute("user") != null) {
@@ -282,7 +291,7 @@ public class Controller extends HttpServlet {
                 }
                 
                 // Store data and group to database
-                con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
+                con = dbUtil.getDBConnection();
                 pstmt = con.prepareStatement(
                     "UPDATE User SET data = ?, fieldGroup = ? WHERE username = ?"
                 );
@@ -298,12 +307,7 @@ public class Controller extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            try {
-                if (pstmt != null) {pstmt.close();}
-                if (con != null) {con.close();}
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            dbUtil.closeDBObjects(con, pstmt);
         }
     }
 }

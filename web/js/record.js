@@ -76,8 +76,6 @@ pageLoad = function() {
 		fieldGroupList.appendChild(option);
 	}
 
-	//$("#dataBox").hide();
-	//$("#groupBox").show();
 	$("#tabArea").tabs();
 }
 
@@ -105,6 +103,23 @@ insertData = function() {
 	var name = document.getElementById('fieldName').value;
 	var value = document.getElementById('fieldValue').value;
 	var fieldGroup = document.getElementById('fieldGroup').value;
+
+	// Check if empty
+	if (name == "") {
+		alert("Action Abort: Field Name Cannot Be Empty!");
+		return;
+	} else if (value == "") {
+		alert("Action Abort: Field Value Cannot Be Empty!");
+		return;
+	}
+
+	// Check if duplicate
+	for (var i=0; i<data.length; i++) {
+		if (data[i].group == fieldGroup && data[i].name == name) {
+			alert("Action Abort: Duplicate Field Name!");
+			return;
+		}
+	}
 
 	var field = {"dataType" : dataType, "name" : name, "value" : value, "group" : fieldGroup};
 	data.push(field);
@@ -305,13 +320,30 @@ updateRecord = function(event) {
 	var row = source.parentElement.parentElement;
 	var tempRow = row;
 
+	// Check if empty
+	if (row.childNodes[1].firstChild.value == "") {
+		alert("Action Abort: Field Name Cannot Be Empty!");
+		return;
+	} else if (row.childNodes[2].firstChild.value == "") {
+		alert("Action Abort: Field Value Cannot Be Empty!");
+
+	}
+
+	// Check if duplicate
+	for (var i=0; i<data.length; i++) {
+		if (data[i].group == row.childNodes[3].firstChild.value && data[i].name == row.childNodes[1].firstChild.value) {
+			alert("Action Abort: Duplicate Field Name!");
+			return;
+		}
+	}
+
 	// Retrieve the index of the record
 	var i = -2;
 	while ((tempRow = tempRow.previousSibling) != null) {
 		i++;
 	}
 
-        // Update record
+    // Update record
 	data[i].dataType = row.childNodes[0].firstChild.value;
 	data[i].name = row.childNodes[1].firstChild.value;
 	data[i].value = row.childNodes[2].firstChild.value;
@@ -344,6 +376,7 @@ updateRecord = function(event) {
 
 // Save data to database
 saveData = function() {
+	data.sort(sortData);
     $.ajax({
         url: "DataSaver",
         type: 'POST',
@@ -423,10 +456,10 @@ deleteGroupRecord = function() {
 		i++;
 	}
 
-	// If some records belong to this group, reject the action
+	// If some records belong to this group, abort action
 	for (var j=0; j<data.length; j++) {
 		if (data[j].group == group[i].name) {
-			alert("Group cannot be delete because it is in used by some fields.");
+			alert("Group Cannot Be Deleted Because It Is In Use By Some Fields.");
 			return;
 		}
 	}
@@ -457,6 +490,20 @@ updateGroupRecord = function(event) {
 	var row = source.parentElement.parentElement;
 	var tempRow = row;
 
+	// Check if empty
+	if (row.childNodes[0].firstChild.value == "") {
+		alert("Action Abort: Group Name Cannot Be Empty!");
+		return;
+	}
+
+	// Check if duplicate
+	for (var i=0; i<group.length; i++) {
+		if (group[i].name == row.childNodes[0].firstChild.value) {
+			alert("Action Abort: Duplicate Group Name!");
+			return;
+		}
+	}
+	
 	// Retrieve the index of the record
 	var i = -2;
 	while ((tempRow = tempRow.previousSibling) != null) {
@@ -482,7 +529,6 @@ updateGroupRecord = function(event) {
 		}
 	}
 
-
 	currentGroupRow = null;
 	originGroupName = null;
 }
@@ -490,6 +536,12 @@ updateGroupRecord = function(event) {
 // Insert new group data record
 insertGroup = function() {
 	var name = document.getElementById('groupName').value;
+
+	// Check if empty
+	if (name == "") {
+		alert("Action Abort: Group Name Cannot Be Empty!");
+		return;
+	}
 
 	// Check if duplicate
 	for (var i=0; i<group.length; i++) {
@@ -527,6 +579,7 @@ insertGroup = function() {
 
 // Save group list to database
 saveGroup = function() {
+	group.sort(sortGroup);
     $.ajax({
         url: "GroupSaver",
         type: 'POST',
@@ -541,15 +594,23 @@ saveGroup = function() {
     saveData();
 }
 
-/*
-displayGroup = function() {
-	$("#dataBox").hide();
-	$("#groupBox").show();
+sortData = function(a, b) {
+	if (a.group > b.group) {
+		return 1;
+	} else if (a.group < b.group) {
+		return -1;
+	} else {
+		return 0;
+	}
 }
 
-displayData = function() {
-	$("#groupBox").hide();
-	$("#dataBox").show();
+sortGroup = function(a, b) {
+	if (a.name > b.name) {
+		return 1;
+	} else if (a.name < b.name) {
+		return -1;
+	} else {
+		return 0;
+	}
 }
-*/
 

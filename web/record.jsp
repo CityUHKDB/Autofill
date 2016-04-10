@@ -6,7 +6,7 @@
         <title>FYP</title>
         <script>
             // Decode JSON
-            var data = JSON.parse('${user.data}');
+            var data = JSON.parse('${user.data}')
             var group = JSON.parse('${user.group}');
         </script>
         <script src='js/record.js'></script>

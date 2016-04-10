@@ -1,7 +1,6 @@
 package Autofill;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,9 +9,6 @@ import java.util.ArrayList;
 public class AccountManager {
     
     private static AccountManager instance;
-    private static final String DBURL = "jdbc:mysql://127.0.0.1:3307/Autofill";
-    private static final String DBUsername = "root";
-    private static final String DBPassword = "admin";
     
     public static AccountManager getInstance() {
         if (instance == null) {
@@ -31,8 +27,9 @@ public class AccountManager {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         
+        DBUtil dbUtil = DBUtil.getInstance();
         try {
-            con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
+            con = dbUtil.getDBConnection();
             pstmt = con.prepareStatement(
                 "SELECT role, data, fieldGroup FROM User WHERE username = ? AND password = ?"
             );
@@ -51,13 +48,7 @@ public class AccountManager {
         } catch (SQLException e) {
             throw e;
         } finally {
-            try {
-                if (rs != null) {rs.close();}
-                if (pstmt != null) {pstmt.close();}
-                if (con != null) {con.close();}
-            } catch (SQLException e) {
-                throw e;
-            }
+            dbUtil.closeDBObjects(con, pstmt, rs);
         }
         
         return user;
@@ -71,9 +62,10 @@ public class AccountManager {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         
+        DBUtil dbUtil = DBUtil.getInstance();
         try {
             if (!username.equals("") && !password.equals("")) {
-                con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
+                con = dbUtil.getDBConnection();
                 pstmt = con.prepareStatement(
                     "INSERT INTO User (username, password, role, data, fieldGroup) VALUES (?, ?, ?, ?, ?)"
                 );
@@ -89,13 +81,7 @@ public class AccountManager {
         } catch (SQLException e) {
             throw e;
         } finally {
-            try {
-                if (rs != null) {rs.close();}
-                if (pstmt != null) {pstmt.close();}
-                if (con != null) {con.close();}
-            } catch (SQLException e) {
-                throw e;
-            }
+            dbUtil.closeDBObjects(con, pstmt, rs);
         }
         
         return successful;
@@ -107,8 +93,9 @@ public class AccountManager {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         
+        DBUtil dbUtil = DBUtil.getInstance();
         try {
-            con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
+            con = dbUtil.getDBConnection();
             pstmt = con.prepareStatement(
                 "DELETE FROM User WHERE username = ?"
             );
@@ -118,13 +105,7 @@ public class AccountManager {
         } catch (SQLException e) {
             throw e;
         } finally {
-            try {
-                if (rs != null) {rs.close();}
-                if (pstmt != null) {pstmt.close();}
-                if (con != null) {con.close();}
-            } catch (SQLException e) {
-                throw e;
-            }
+            dbUtil.closeDBObjects(con, pstmt, rs);
         }
         
         return successful;
@@ -137,8 +118,9 @@ public class AccountManager {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         
+        DBUtil dbUtil = DBUtil.getInstance();
         try {
-            con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
+            con = dbUtil.getDBConnection();
             pstmt = con.prepareStatement(
                 "SELECT * FROM User ORDER BY username"
             );
@@ -152,13 +134,7 @@ public class AccountManager {
         } catch (SQLException e) {
             throw e;
         } finally {
-            try {
-                if (rs != null) {rs.close();}
-                if (pstmt != null) {pstmt.close();}
-                if (con != null) {con.close();}
-            } catch (SQLException e) {
-                throw e;
-            }
+            dbUtil.closeDBObjects(con, pstmt, rs);
         }
         
         return userList;

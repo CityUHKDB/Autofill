@@ -35,19 +35,19 @@ import javax.servlet.http.HttpSession;
 <span class="fc" id="L35">            PreparedStatement pstmt = null;</span>
             try {
 <span class="fc" id="L37">                Class.forName(&quot;com.mysql.jdbc.Driver&quot;);</span>
-<span class="fc" id="L38">                con = DriverManager.getConnection(</span>
+<span class="nc" id="L38">                con = DriverManager.getConnection(</span>
                     &quot;jdbc:mysql://127.0.0.1:3307/Autofill&quot;,
                     &quot;root&quot;,
                     &quot;admin&quot;
                 );
-<span class="fc" id="L43">                pstmt = con.prepareStatement(</span>
+<span class="nc" id="L43">                pstmt = con.prepareStatement(</span>
                     &quot;UPDATE User SET fieldGroup = ? WHERE username = ?&quot;
                 );
-<span class="fc" id="L46">                pstmt.setString(1, group);</span>
-<span class="fc" id="L47">                pstmt.setString(2, user.getUsername());</span>
-<span class="fc" id="L48">                pstmt.executeUpdate();</span>
-<span class="nc" id="L49">            } catch (Exception e) {</span>
-<span class="nc" id="L50">                e.printStackTrace();</span>
+<span class="nc" id="L46">                pstmt.setString(1, group);</span>
+<span class="nc" id="L47">                pstmt.setString(2, user.getUsername());</span>
+<span class="nc" id="L48">                pstmt.executeUpdate();</span>
+<span class="fc" id="L49">            } catch (Exception e) {</span>
+<span class="fc" id="L50">                e.printStackTrace();</span>
             } finally {
 <span class="nc" id="L52">                try {</span>
 <span class="pc bpc" id="L53" title="5 of 6 branches missed.">                    if (pstmt != null) {pstmt.close();}</span>

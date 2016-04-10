@@ -75,6 +75,7 @@ public class StructureAnalyser {
                 String fieldLabel = PdfTextExtractor.getTextFromPage(reader, currentField.getPage(), strategy);
                 fieldLabel = fieldLabel.replace(":", "");
                 fieldLabel = fieldLabel.replace("_", "");
+                fieldLabel = fieldLabel.replace("\n", " ");
                 fieldLabel = fieldLabel.trim();
                 currentField.setFieldLabel(fieldLabel); 
             }

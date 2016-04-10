@@ -2,7 +2,7 @@
 <div id='header'>
     <div class='container'>
         <div id='logo'>
-            <h1>FYP Web Site</h1>
+            <h1>Autofill System</h1>
         </div>
 
         <div id='loginBox'>

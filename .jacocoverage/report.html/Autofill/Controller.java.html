@@ -9,626 +9,302 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 <span class="fc" id="L25">public class Controller extends HttpServlet {</span>
     
     // upload settings
-    private static final String DIRECTORY = &quot;form&quot;;
-    private static final int MEMORY_THRESHOLD   = 1024 * 1024 * 3;  // 3MB
-    private static final int MAX_FILE_SIZE      = 1024 * 1024 * 40; // 40MB
-    private static final int MAX_REQUEST_SIZE   = 1024 * 1024 * 50; // 50MB
+    private static final String FORM_DIRECTORY = &quot;form&quot;;
+    private static final String IMPORT_DIRECTORY = &quot;import&quot;;
     private static final String DBURL = &quot;jdbc:mysql://127.0.0.1:3307/Autofill&quot;;
     private static final String DBUsername = &quot;root&quot;;
     private static final String DBPassword = &quot;admin&quot;;
-
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-<span class="nc" id="L38">        response.setContentType(&quot;text/html;charset=UTF-8&quot;);</span>
+<span class="nc" id="L36">        response.setContentType(&quot;text/html;charset=UTF-8&quot;);</span>
         
         String addr;
-<span class="nc" id="L41">        HttpSession session = request.getSession(true);</span>
+<span class="nc" id="L39">        HttpSession session = request.getSession(true);</span>
         //ps -ef | grep mysql
         
         try {
-            //con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
-<span class="nc" id="L46">            String page = request.getParameter(&quot;page&quot;);</span>
-<span class="nc bnc" id="L47" title="All 2 branches missed.">            if (page == null) {</span>
-<span class="nc" id="L48">                addr = &quot;home.jsp&quot;;</span>
+<span class="nc" id="L43">            String page = request.getParameter(&quot;page&quot;);</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">            if (page == null) {</span>
+<span class="nc" id="L45">                addr = &quot;home.jsp&quot;;</span>
             } else {
-<span class="nc bnc" id="L50" title="All 42 branches missed.">                switch (page) {</span>
+<span class="nc bnc" id="L47" title="All 46 branches missed.">                switch (page) {</span>
                     case &quot;register&quot;:
-<span class="nc bnc" id="L52" title="All 2 branches missed.">                        if (register(request)) {</span>
-<span class="nc" id="L53">                            addr = &quot;home.jsp&quot;;</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">                        if (register(request)) {</span>
+<span class="nc" id="L50">                            addr = &quot;home.jsp&quot;;</span>
                         } else {
-<span class="nc" id="L55">                            addr = &quot;register.jsp&quot;;</span>
+<span class="nc" id="L52">                            addr = &quot;register.jsp&quot;;</span>
                         }
-<span class="nc" id="L57">                        break;</span>
+<span class="nc" id="L54">                        break;</span>
                     case &quot;login&quot;:
-<span class="nc bnc" id="L59" title="All 2 branches missed.">                        if (login(request)) {</span>
-<span class="nc" id="L60">                            addr = &quot;home.jsp&quot;;</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">                        if (login(request)) {</span>
+<span class="nc" id="L57">                            addr = &quot;home.jsp&quot;;</span>
                         } else {
-<span class="nc" id="L62">                            addr = &quot;home.jsp&quot;;</span>
+<span class="nc" id="L59">                            addr = &quot;home.jsp&quot;;</span>
                         }
-<span class="nc" id="L64">                        break;</span>
+<span class="nc" id="L61">                        break;</span>
                     case &quot;logout&quot;:
-<span class="nc" id="L66">                        session.setAttribute(&quot;user&quot;, null);</span>
-<span class="nc" id="L67">                        addr = &quot;home.jsp&quot;;</span>
-<span class="nc" id="L68">                        break;</span>
+<span class="nc" id="L63">                        session.setAttribute(&quot;user&quot;, null);</span>
+<span class="nc" id="L64">                        addr = &quot;home.jsp&quot;;</span>
+<span class="nc" id="L65">                        break;</span>
                     case &quot;record&quot;:
-<span class="nc" id="L70">                        addr = &quot;record.jsp&quot;;</span>
-<span class="nc" id="L71">                        break;</span>
+<span class="nc" id="L67">                        addr = &quot;record.jsp&quot;;</span>
+<span class="nc" id="L68">                        break;</span>
+                    case &quot;import&quot;:
+<span class="nc" id="L70">                        importData(request);</span>
+<span class="nc" id="L71">                        addr = &quot;record.jsp&quot;;</span>
+<span class="nc" id="L72">                        break;</span>
                     case &quot;save&quot;:
-<span class="nc" id="L73">                        String data = (String)session.getAttribute(&quot;data&quot;);</span>
-<span class="nc" id="L74">                        System.out.println(data);</span>
-<span class="nc" id="L75">                        addr = &quot;record.jsp&quot;;</span>
-<span class="nc" id="L76">                        break;</span>
+<span class="nc" id="L74">                        String data = (String)session.getAttribute(&quot;data&quot;);</span>
+<span class="nc" id="L75">                        System.out.println(data);</span>
+<span class="nc" id="L76">                        addr = &quot;record.jsp&quot;;</span>
+<span class="nc" id="L77">                        break;</span>
                     case &quot;fill&quot;:
-<span class="nc" id="L78">                        session.setAttribute(&quot;formList&quot;, FormManager.getInstance().getFormList());</span>
-<span class="nc" id="L79">                        addr = &quot;fill.jsp&quot;;</span>
-<span class="nc" id="L80">                        break;</span>
+<span class="nc" id="L79">                        session.setAttribute(&quot;formList&quot;, FormManager.getInstance().getFormList());</span>
+<span class="nc" id="L80">                        addr = &quot;fill.jsp&quot;;</span>
+<span class="nc" id="L81">                        break;</span>
                     case &quot;process&quot;:
-<span class="nc" id="L82">                        toProcessPage(request);</span>
-<span class="nc" id="L83">                        addr = &quot;process.jsp&quot;;</span>
-<span class="nc" id="L84">                        break;</span>
+<span class="nc" id="L83">                        toProcessPage(request);</span>
+<span class="nc" id="L84">                        addr = &quot;process.jsp&quot;;</span>
+<span class="nc" id="L85">                        break;</span>
                     case &quot;result&quot;:
-<span class="nc" id="L86">                        toResultPage(request);</span>
-<span class="nc" id="L87">                        addr = &quot;result.jsp&quot;;</span>
-<span class="nc" id="L88">                        break;</span>
+<span class="nc" id="L87">                        toResultPage(request);</span>
+<span class="nc" id="L88">                        addr = &quot;result.jsp&quot;;</span>
+<span class="nc" id="L89">                        break;</span>
                     case &quot;manage&quot;:
-<span class="nc" id="L90">                        toManagePage(request);</span>
-<span class="nc" id="L91">                        addr = &quot;manage.jsp&quot;;</span>
-<span class="nc" id="L92">                        break;</span>
+<span class="nc" id="L91">                        toManagePage(request);</span>
+<span class="nc" id="L92">                        addr = &quot;manage.jsp&quot;;</span>
+<span class="nc" id="L93">                        break;</span>
                     case &quot;statistics&quot;:
-<span class="nc" id="L94">                        session.setAttribute(&quot;statistics&quot;, Dictionary.getInstance().getHistory());</span>
-<span class="nc" id="L95">                        addr = &quot;statistics.jsp&quot;;</span>
-<span class="nc" id="L96">                        break;</span>
+<span class="nc" id="L95">                        session.setAttribute(&quot;statistics&quot;, Dictionary.getInstance().getHistory());</span>
+<span class="nc" id="L96">                        addr = &quot;statistics.jsp&quot;;</span>
+<span class="nc" id="L97">                        break;</span>
                     default:
-<span class="nc" id="L98">                        addr = &quot;home.jsp&quot;;</span>
+<span class="nc" id="L99">                        addr = &quot;home.jsp&quot;;</span>
                         break;
                 }            
             }
-<span class="nc" id="L102">        } catch (Exception e) {</span>
-<span class="nc" id="L103">            addr = &quot;error.jsp&quot;;</span>
-<span class="nc" id="L104">        }</span>
+<span class="nc" id="L103">        } catch (Exception e) {</span>
+<span class="nc" id="L104">            e.printStackTrace();</span>
+<span class="nc" id="L105">            addr = &quot;error.jsp&quot;;</span>
+<span class="nc" id="L106">        }</span>
         
-<span class="nc" id="L106">        RequestDispatcher dispatcher = request.getRequestDispatcher(addr);</span>
-<span class="nc" id="L107">        dispatcher.forward(request, response); </span>
+<span class="nc" id="L108">        RequestDispatcher dispatcher = request.getRequestDispatcher(addr);</span>
+<span class="nc" id="L109">        dispatcher.forward(request, response); </span>
         
-<span class="nc" id="L109">    }</span>
+<span class="nc" id="L111">    }</span>
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-<span class="nc" id="L114">        processRequest(request, response);</span>
-<span class="nc" id="L115">    }</span>
+<span class="nc" id="L116">        processRequest(request, response);</span>
+<span class="nc" id="L117">    }</span>
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-<span class="nc" id="L120">        processRequest(request, response);</span>
-<span class="nc" id="L121">    }</span>
+<span class="nc" id="L122">        processRequest(request, response);</span>
+<span class="nc" id="L123">    }</span>
 
     
     // User registration
     // Return true if success, otherwise return false
     private boolean register(HttpServletRequest request) throws SQLException {
-        /*
-        if (request.getParameter(&quot;username&quot;) != null) {
-            pstmt = con.prepareStatement(
-                &quot;INSERT INTO User (username, password, role, data, fieldGroup) VALUES (?, ?, ?, ?, ?)&quot;
-            );
-            pstmt.setString(1, request.getParameter(&quot;username&quot;));
-            pstmt.setString(2, request.getParameter(&quot;password&quot;));
-            pstmt.setString(3, &quot;user&quot;);
-            pstmt.setString(4, &quot;[]&quot;);
-            pstmt.setString(5, &quot;[]&quot;);
-            pstmt.executeUpdate();
-            
-            return true;
-        } else {
-            return false;
-        }
-        */
-<span class="fc" id="L144">        AccountManager authentication = AccountManager.getInstance();</span>
-<span class="fc" id="L145">        String username = (String)request.getParameter(&quot;username&quot;);</span>
-<span class="fc" id="L146">        String password = (String)request.getParameter(&quot;password&quot;);</span>
-<span class="fc" id="L147">        boolean successful = authentication.register(username, password);</span>
-<span class="fc" id="L148">        return successful;</span>
+<span class="fc" id="L129">        AccountManager authentication = AccountManager.getInstance();</span>
+<span class="fc" id="L130">        String username = (String)request.getParameter(&quot;username&quot;);</span>
+<span class="fc" id="L131">        String password = (String)request.getParameter(&quot;password&quot;);</span>
+<span class="nc" id="L132">        boolean successful = authentication.register(username, password);</span>
+<span class="nc" id="L133">        return successful;</span>
     }
     
     // User login
     // Return true if success, otherwise return false
     private boolean login(HttpServletRequest request) throws SQLException {
-        /*
-        if (request.getParameter(&quot;username&quot;) != null) {
-            pstmt = con.prepareStatement(
-                &quot;SELECT role, data, fieldGroup FROM User WHERE username = ? AND password = ?&quot;
-            );
-            pstmt.setString(1, request.getParameter(&quot;username&quot;));
-            pstmt.setString(2, request.getParameter(&quot;password&quot;));
-            rs = pstmt.executeQuery();
-
-            // If success login, store account information to the session object
-            if (rs.next()) {
-                User user = new User();
-                user.setUsername(request.getParameter(&quot;username&quot;));
-                user.setRole(rs.getString(&quot;role&quot;));
-                user.setData(rs.getString(&quot;data&quot;));
-                user.setGroup(rs.getString(&quot;fieldGroup&quot;));
-                request.getSession().setAttribute(&quot;user&quot;, user);
-            }
-            
-        }
-        
-        if (request.getSession().getAttribute(&quot;user&quot;) != null) {
-            return true;
+<span class="fc" id="L139">        AccountManager authentication = AccountManager.getInstance();</span>
+<span class="fc" id="L140">        String username = (String)request.getParameter(&quot;username&quot;);</span>
+<span class="fc" id="L141">        String password = (String)request.getParameter(&quot;password&quot;);</span>
+<span class="nc" id="L142">        User user = authentication.authenticate(username, password);</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        if (user != null) {</span>
+<span class="nc" id="L144">            request.getSession().setAttribute(&quot;user&quot;, user);</span>
+<span class="nc" id="L145">            return true;</span>
         } else {
-            return false;
-        }
-        */
-        
-<span class="fc" id="L182">        AccountManager authentication = AccountManager.getInstance();</span>
-<span class="fc" id="L183">        String username = (String)request.getParameter(&quot;username&quot;);</span>
-<span class="fc" id="L184">        String password = (String)request.getParameter(&quot;password&quot;);</span>
-<span class="fc" id="L185">        User user = authentication.authenticate(username, password);</span>
-<span class="pc bpc" id="L186" title="1 of 2 branches missed.">        if (user != null) {</span>
-<span class="fc" id="L187">            request.getSession().setAttribute(&quot;user&quot;, user);</span>
-<span class="fc" id="L188">            return true;</span>
-        } else {
-<span class="nc" id="L190">            return false;</span>
+<span class="nc" id="L147">            return false;</span>
         }
 
     }
-    
-    // Return the name of the uplaoded file if success, otherwise return false
-    private String fileUpload(HttpServletRequest request) throws IOException, FileUploadException, Exception {
-        // checks if the request actually contains upload file
-<span class="nc bnc" id="L198" title="All 2 branches missed.">        if (ServletFileUpload.isMultipartContent(request)) {</span>
-            // configures upload settings
-<span class="nc" id="L200">            DiskFileItemFactory factory = new DiskFileItemFactory();</span>
-            // sets memory threshold - beyond which files are stored in disk
-<span class="nc" id="L202">            factory.setSizeThreshold(MEMORY_THRESHOLD);</span>
-            // sets temporary location to store files
-<span class="nc" id="L204">            factory.setRepository(new File(System.getProperty(&quot;java.io.tmpdir&quot;)));</span>
 
-<span class="nc" id="L206">            ServletFileUpload upload = new ServletFileUpload(factory);</span>
-
-            // sets maximum size of upload file
-<span class="nc" id="L209">            upload.setFileSizeMax(MAX_FILE_SIZE);</span>
-
-            // sets maximum size of request (include file + form data)
-<span class="nc" id="L212">            upload.setSizeMax(MAX_REQUEST_SIZE);</span>
-
-            // creates the directory if it does not exist
-<span class="nc" id="L215">            File uploadDir = new File(getServletContext().getRealPath(DIRECTORY));</span>
-<span class="nc bnc" id="L216" title="All 2 branches missed.">            if (!uploadDir.exists()) {</span>
-<span class="nc" id="L217">                uploadDir.mkdir();</span>
-            }
-
-            // parses the request's content to extract file data
-            //@SuppressWarnings(&quot;unchecked&quot;)
-<span class="nc" id="L222">            List&lt;FileItem&gt; formItems = upload.parseRequest(request);</span>
-
-<span class="nc" id="L224">            String fileName = null;</span>
-<span class="nc" id="L225">            String filepath = null;</span>
-<span class="nc bnc" id="L226" title="All 4 branches missed.">            if (formItems != null &amp;&amp; formItems.size() &gt; 0) {</span>
-<span class="nc bnc" id="L227" title="All 2 branches missed.">                for (FileItem item : formItems) {</span>
-                    // processes only fields that are not form fields
-<span class="nc bnc" id="L229" title="All 2 branches missed.">                    if (!item.isFormField()) {</span>
-<span class="nc" id="L230">                        fileName = new File(item.getName()).getName();</span>
-<span class="nc" id="L231">                        filepath = getServletContext().getRealPath(DIRECTORY + File.separator + fileName);</span>
-<span class="nc" id="L232">                        File storeFile = new File(filepath);</span>
-<span class="nc" id="L233">                        item.write(storeFile);</span>
-                    }
-<span class="nc" id="L235">                }</span>
-<span class="nc" id="L236">                FormManager formManager = FormManager.getInstance();</span>
-<span class="nc" id="L237">                formManager.addForm(fileName);</span>
-<span class="nc" id="L238">                return fileName;</span>
-            }
-
-
-            /*
-            Connection con = null;
-            PreparedStatement pstmt = null;
-            ResultSet rs = null;
-            try {
-                con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
-                //Store file information to database
-                pstmt = con.prepareStatement(
-                    &quot;INSERT INTO Form VALUES (?, ?)&quot;
-                );
-                pstmt.setString(1, fileName);
-                pstmt.setString(2, fileName.substring(0, fileName.lastIndexOf('.')));
-                pstmt.executeUpdate();
-            } catch (Exception e) {
-                } finally {
-                try {
-                    if (con != null) {con.close();}
-                    if (pstmt != null) {con.close();}
-                    if (rs != null) {con.close();}
-                } catch (Exception e) {
-
-                }
-            }
-
-            return fileName;
-            */
-        }
-<span class="nc" id="L269">        return null;</span>
-    }
-    
-    /*
-    private ArrayList&lt;PDFForm&gt; createFormList() {
-        ArrayList&lt;PDFForm&gt; formList = new ArrayList();
-        
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        
-        try {
-            con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);
-            pstmt = con.prepareStatement(
-                &quot;SELECT * FROM Form ORDER BY name&quot;
-            );
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                PDFForm form = new PDFForm();
-                form.setName(rs.getString(&quot;name&quot;));
-                form.setDescription(rs.getString(&quot;description&quot;));
-                formList.add(form);
-            }
-        } catch (Exception e) {
-            
-        } finally {
-            try {
-                if (con != null) {con.close();}
-                if (pstmt != null) {con.close();}
-                if (rs != null) {con.close();}
-            } catch (Exception e) {
-                
-            }
-        }
-        
-        return formList;
-    }
-    */
     private void toProcessPage(HttpServletRequest request) throws IOException, FileUploadException, DocumentException, JSONException, Exception {
-<span class="nc" id="L308">        String filepath = request.getParameter(&quot;formPath&quot;);</span>
-<span class="nc" id="L309">        System.out.println(filepath);</span>
-<span class="nc bnc" id="L310" title="All 2 branches missed.">        if (filepath == null) {</span>
-<span class="nc" id="L311">            filepath = fileUpload(request);</span>
+<span class="nc" id="L153">        String filepath = request.getParameter(&quot;formPath&quot;);</span>
+<span class="nc" id="L154">        System.out.println(filepath);</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">        if (filepath == null) {</span>
+<span class="nc" id="L156">            FileUploader uploader = FileUploader.getInstance();</span>
+<span class="nc" id="L157">            String directory = getServletContext().getRealPath(FORM_DIRECTORY);</span>
+<span class="nc" id="L158">            filepath = uploader.upload(request, directory, null);</span>
         } 
-<span class="nc" id="L313">        User user = ((User)request.getSession().getAttribute(&quot;user&quot;));</span>
-<span class="nc" id="L314">        FormFiller filler = new FormFiller(getServletContext().getRealPath(DIRECTORY + File.separator + filepath));</span>
-        /*
-        ArrayList&lt;AcroFormField&gt; fields = filler.fillPdf(
-            getServletContext().getRealPath(DIRECTORY + File.separator + &quot;temp.pdf&quot;), 
-            user.getData(),
-            con,
-            pstmt,
-            rs
-        );
-        */
-<span class="nc" id="L324">        ArrayList&lt;AcroFormField&gt; fields = filler.fillPdf(</span>
-<span class="nc" id="L325">            getServletContext().getRealPath(DIRECTORY + File.separator + &quot;temp.pdf&quot;), </span>
-<span class="nc" id="L326">            user.getData()</span>
-        );
-<span class="nc" id="L328">        request.getSession().setAttribute(&quot;fields&quot;, fields);</span>
+<span class="nc" id="L160">        System.out.println(filepath);</span>
+<span class="nc" id="L161">        User user = ((User)request.getSession().getAttribute(&quot;user&quot;));</span>
+<span class="nc" id="L162">        FormFiller filler = new FormFiller(getServletContext().getRealPath(FORM_DIRECTORY + File.separator + filepath));</span>
 
-<span class="nc" id="L330">    }</span>
+<span class="nc" id="L164">        ArrayList&lt;AcroFormField&gt; fields = filler.fillPdf(</span>
+<span class="nc" id="L165">            getServletContext().getRealPath(FORM_DIRECTORY + File.separator + user.getUsername() + &quot;.pdf&quot;), </span>
+<span class="nc" id="L166">            user.getData()</span>
+        );
+<span class="nc" id="L168">        request.getSession().setAttribute(&quot;fields&quot;, fields);</span>
+
+<span class="nc" id="L170">    }</span>
     
     private void toResultPage(HttpServletRequest request) throws IOException, DocumentException, SQLException {
-<span class="nc" id="L333">        Dictionary dictionary = Dictionary.getInstance();</span>
-<span class="nc" id="L334">        HttpSession session = request.getSession();</span>
-<span class="nc" id="L335">        ArrayList&lt;AcroFormField&gt; fields = (ArrayList&lt;AcroFormField&gt;)session.getAttribute(&quot;fields&quot;);</span>
+<span class="nc" id="L173">        Dictionary dictionary = Dictionary.getInstance();</span>
+<span class="nc" id="L174">        HttpSession session = request.getSession();</span>
+<span class="nc" id="L175">        ArrayList&lt;AcroFormField&gt; fields = (ArrayList&lt;AcroFormField&gt;)session.getAttribute(&quot;fields&quot;);</span>
+<span class="nc" id="L176">        User user = (User)session.getAttribute(&quot;user&quot;);</span>
+<span class="nc" id="L177">        String filepath = getServletContext().getRealPath(FORM_DIRECTORY + File.separator + user.getUsername() + &quot;.pdf&quot;);</span>
 
-<span class="nc" id="L337">        PdfReader reader = new PdfReader(getServletContext().getRealPath(DIRECTORY + File.separator + &quot;temp.pdf&quot;)); </span>
-<span class="nc" id="L338">        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(getServletContext().getRealPath(DIRECTORY + File.separator + &quot;result.pdf&quot;)));</span>
-<span class="nc" id="L339">        AcroFields form = stamper.getAcroFields();</span>
+<span class="nc" id="L179">        PdfReader reader = new PdfReader(filepath); </span>
+<span class="nc" id="L180">        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(getServletContext().getRealPath(FORM_DIRECTORY + File.separator + &quot;result.pdf&quot;)));</span>
+<span class="nc" id="L181">        AcroFields form = stamper.getAcroFields();</span>
 
-<span class="nc bnc" id="L341" title="All 2 branches missed.">        for (AcroFormField field : fields) {</span>
-<span class="nc bnc" id="L342" title="All 4 branches missed.">            if (field.getFieldLabel() != null &amp;&amp; field.getFieldLabel().length() != 0) {</span>
-<span class="nc bnc" id="L343" title="All 2 branches missed.">                if (!request.getParameter(field.getFieldName() + &quot;_option&quot;).equals(&quot;&quot;)) {</span>
-<span class="nc bnc" id="L344" title="All 2 branches missed.">                    if (form.getField(field.getFieldName()).equals(&quot;&quot;)) {</span>
-                        // Add synonym to dictionary
-                        /*
-                        String personalFieldName = request.getParameter(field.getFieldName() + &quot;_personalFieldName&quot;);
-                        pstmt = con.prepareStatement(
-                            &quot;INSERT INTO Dictionary VALUES (?, ?, ?, ?)&quot;
-                        );
-                        pstmt.setString(1, personalFieldName);
-                        pstmt.setString(2, field.getFieldName().toLowerCase());
-                        pstmt.setFloat(3, 0.5f);
-                        pstmt.setString(4, &quot;[{\&quot;word1\&quot;: \&quot;&quot; + personalFieldName + &quot;\&quot;, \&quot;word2\&quot;: \&quot;&quot; + field.getFieldName().toLowerCase() + &quot;\&quot;, \&quot;probability\&quot;: \&quot;0.5\&quot;&quot;);
-                        pstmt.executeUpdate();
-                        */
-<span class="nc" id="L357">                        String personalFieldName = request.getParameter(field.getFieldName() + &quot;_personalFieldName&quot;);</span>
-<span class="nc" id="L358">                        dictionary.addSynonym(personalFieldName, field.getFieldName().toLowerCase());</span>
-<span class="nc bnc" id="L359" title="All 2 branches missed.">                    } else if (!form.getField(field.getFieldName()).equals(request.getParameter(field.getFieldName()))) {</span>
-                        // Reduce synonym's probability in dictionary
-                        /*
-                        pstmt = con.prepareStatement(
-                            &quot;SELECT probability, history FROM Dictionary WHERE standard = ? AND synonym = ?&quot;
-                        );
-                        pstmt.setString(1, field.getPersonalFieldName());
-                        pstmt.setString(2, field.getFieldName().toLowerCase());
-                        System.out.println(&quot;TEST &quot; + pstmt);
-                        rs = pstmt.executeQuery();
-                        if (rs.next()) {
-                            Float probability = rs.getFloat(&quot;probability&quot;);
-                            String history = rs.getString(&quot;history&quot;);
-                            probability = probability - 0.1f;
-                            if (probability &lt; 0) {
-                                // Remove entry
-                                pstmt = con.prepareStatement(
-                                    &quot;DELETE FROM Dictionary WHERE standard = ? AND synonym = ?&quot;
-                                );
-                                pstmt.setString(1, field.getPersonalFieldName());
-                                pstmt.setString(2, field.getFieldName().toLowerCase());
-                                pstmt.executeUpdate();
-                            } else {
-                                // Update probability
-                                String newHistory = addHistory(history, formatHistoryRecord(field.getPersonalFieldName(), field.getFieldName().toLowerCase(), probability));
-                                pstmt = con.prepareStatement(
-                                    &quot;UPDATE Dictionary SET probability = ?, history = ? WHERE standard = ? AND synonym = ?&quot;
-                                );
-                                pstmt.setFloat(1, probability);
-                                pstmt.setString(2, newHistory);
-                                pstmt.setString(3, field.getPersonalFieldName());
-                                pstmt.setString(4, field.getFieldName().toLowerCase());
-                                pstmt.executeUpdate();                                        
-                                //System.out.println(&quot;History : &quot; + addHistory(history, formatHistoryRecord(field.getPersonalFieldName(), field.getFieldName().toLowerCase(), probability)));
-                            }
-                            System.out.println(&quot;TEST2 &quot; + pstmt);
-                        } else {
-                            // Synonym to synonym matching
-                            String personalFieldName = request.getParameter(field.getFieldName() + &quot;_personalFieldName&quot;);
-                            pstmt = con.prepareStatement(
-                                &quot;SELECT D1.standard As standard, D1.probability As probability, D1.history As history FROM Dictionary D1, Dictionary D2 WHERE D1.standard = D2.standard AND D1.synonym = ? AND D2.synonym = ?&quot;
-                            );
-                            pstmt.setString(1, field.getFieldName().toLowerCase());
-                            pstmt.setString(2, field.getPersonalFieldName());
-                            System.out.println(&quot;TEST7 - &quot; + pstmt);
-                            rs = pstmt.executeQuery();
-                            String standard;
-                            String history;
-                            Float probability;
-                            if (rs.next()) {
-                                standard = rs.getString(&quot;standard&quot;);
-                                history = rs.getString(&quot;history&quot;);
-                                probability = rs.getFloat(&quot;probability&quot;);
-                                probability = (float)Math.round((probability - 0.1f)*10)/10;
-                            } else {
-                                continue;
-                            }
-
-                            if (probability == 0) {
-                                //remove
-                            } else {
-                                String newHistory = addHistory(history, formatHistoryRecord(field.getPersonalFieldName(), field.getFieldName().toLowerCase(), probability));
-                                pstmt = con.prepareStatement(
-                                    &quot;UPDATE Dictionary SET probability = ROUND(LEAST(1, probability - 0.1), 1), history = ? WHERE standard = ? AND (synonym = ? OR synonym = ?)&quot;
-                                ); 
-                                pstmt.setString(1, newHistory);
-                                pstmt.setString(2, standard);
-                                pstmt.setString(3, field.getFieldName().toLowerCase());
-                                pstmt.setString(4, field.getPersonalFieldName());
-                                System.out.println(&quot;TEST6 - &quot; + pstmt);
-                                pstmt.executeUpdate();
-                                //System.out.println(&quot;History : &quot; + addHistory(history, formatHistoryRecord(field.getPersonalFieldName(), field.getFieldName().toLowerCase(), probability)));
-                            }
+<span class="nc bnc" id="L183" title="All 2 branches missed.">        for (AcroFormField field : fields) {</span>
+<span class="nc bnc" id="L184" title="All 4 branches missed.">            if (field.getFieldLabel() != null &amp;&amp; field.getFieldLabel().length() != 0) {</span>
+<span class="nc" id="L185">                String option = field.getFieldName() + &quot;_option&quot;;</span>
+<span class="nc" id="L186">                System.out.println(option);</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">                if (request.getParameter(option) != null) {</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">                    if (!request.getParameter(option).equals(&quot;&quot;)) {</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">                        if (form.getField(field.getFieldName()).equals(&quot;&quot;)) {</span>
+                            // Add synonym to dictionary
+<span class="nc" id="L191">                            String personalFieldName = request.getParameter(field.getFieldName() + &quot;_personalFieldName&quot;);</span>
+<span class="nc" id="L192">                            dictionary.addSynonym(personalFieldName, field.getFieldName().toLowerCase());</span>
+<span class="nc" id="L193">                            System.out.println(personalFieldName + &quot; &quot; + field.getFieldName());</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">                        } else if (!form.getField(field.getFieldName()).equals(request.getParameter(field.getFieldName()))) {</span>
+                            // Reduce synonym's probability in dictionary
+<span class="nc" id="L196">                            dictionary.reduceProbability(field.getPersonalFieldName(), field.getFieldName().toLowerCase());</span>
                         }
-                        */
-<span class="nc" id="L434">                        dictionary.reduceProbability(field.getPersonalFieldName(), field.getFieldName().toLowerCase());</span>
+
+<span class="nc bnc" id="L199" title="All 2 branches missed.">                        if (!form.getField(field.getFieldName()).equals(request.getParameter(field.getFieldName()))) {</span>
+                            // Refill that field if it is changed by user
+<span class="nc" id="L201">                            form.setField(</span>
+<span class="nc" id="L202">                                field.getFieldName(), </span>
+<span class="nc" id="L203">                                request.getParameter(field.getFieldName())</span>
+                            );
+                        }
                     }
 
-<span class="nc bnc" id="L437" title="All 2 branches missed.">                    if (!form.getField(field.getFieldName()).equals(request.getParameter(field.getFieldName()))) {</span>
-                        // Refill that field if it is changed by user
-<span class="nc" id="L439">                        form.setField(</span>
-<span class="nc" id="L440">                            field.getFieldName(), </span>
-<span class="nc" id="L441">                            request.getParameter(field.getFieldName())</span>
-                        );
+                    // Matching correct or user perform matching
+<span class="nc bnc" id="L209" title="All 4 branches missed.">                    if ((request.getParameter(field.getFieldName() + &quot;_option&quot;).equals(&quot;&quot;) &amp;&amp; !request.getParameter(field.getFieldName()).equals(&quot;&quot;)) ||</span>
+<span class="nc bnc" id="L210" title="All 6 branches missed.">                        (!request.getParameter(field.getFieldName() + &quot;_option&quot;).equals(&quot;&quot;) &amp;&amp; !form.getField(field.getFieldName()).equals(&quot;&quot;) &amp;&amp; !form.getField(field.getFieldName()).equals(request.getParameter(field.getFieldName())))) {</span>
+                        // Increase probability
+<span class="nc" id="L212">                        String personalFieldName = request.getParameter(field.getFieldName() + &quot;_personalFieldName&quot;);</span>
+<span class="nc" id="L213">                        dictionary.addProbability(personalFieldName, field.getFieldName().toLowerCase());</span>
                     }
                 }
-
-                // Matching correct or user perform matching
-<span class="nc bnc" id="L447" title="All 4 branches missed.">                if ((request.getParameter(field.getFieldName() + &quot;_option&quot;).equals(&quot;&quot;) &amp;&amp; !request.getParameter(field.getFieldName()).equals(&quot;&quot;)) ||</span>
-<span class="nc bnc" id="L448" title="All 6 branches missed.">                    (!request.getParameter(field.getFieldName() + &quot;_option&quot;).equals(&quot;&quot;) &amp;&amp; !form.getField(field.getFieldName()).equals(&quot;&quot;) &amp;&amp; !form.getField(field.getFieldName()).equals(request.getParameter(field.getFieldName())))) {</span>
-                    // Increase probability
-<span class="nc" id="L450">                    String personalFieldName = request.getParameter(field.getFieldName() + &quot;_personalFieldName&quot;);</span>
-                    
-                    /*
-                    // Standard to synonym matching
-                    pstmt = con.prepareStatement(
-                        &quot;SELECT probability, history FROM Dictionary WHERE standard = ? AND synonym = ?&quot;
-                    );                      
-                    pstmt.setString(1, personalFieldName);
-                    pstmt.setString(2, field.getFieldName().toLowerCase());
-                    System.out.println(&quot;TEST3 - &quot; + pstmt);
-                    rs = pstmt.executeQuery();
-                    if (rs.next()) {
-                        float probability = rs.getFloat(&quot;probability&quot;);
-                        String history = rs.getString(&quot;history&quot;);
-                        probability = Math.min(1, Math.round((probability + 0.1f)*10)/10);
-                        String newHistory = addHistory(history, formatHistoryRecord(personalFieldName, field.getFieldName().toLowerCase(), probability));
-                        pstmt = con.prepareStatement(
-                            &quot;UPDATE Dictionary SET probability = ?, history = ? WHERE standard = ? AND synonym = ?&quot;    
-                        );
-                        pstmt.setFloat(1, probability);
-                        pstmt.setString(2, newHistory);
-                        pstmt.setString(3, personalFieldName);
-                        pstmt.setString(4, field.getFieldName().toLowerCase());
-                        pstmt.executeUpdate();
-                        //System.out.println(&quot;History : &quot; + addHistory(history, formatHistoryRecord(personalFieldName, field.getFieldName().toLowerCase(), probability)));
-                        continue;
-                    }
-                        
-                    // Synonym to standard matching
-                    pstmt = con.prepareStatement(
-                        &quot;SELECT probability, history FROM Dictionary WHERE standard = ? AND synonym = ?&quot;
-                    ); 
-                    pstmt.setString(1, field.getFieldName().toLowerCase());
-                    pstmt.setString(2, personalFieldName);
-                    System.out.println(&quot;TEST4 - &quot; + pstmt);
-                    rs = pstmt.executeQuery();
-                    if (rs.next()) {
-                        System.out.println(&quot;TEST4&quot;);
-                        float probability = rs.getFloat(&quot;probability&quot;);
-                        String history = rs.getString(&quot;history&quot;);
-                        probability = Math.min(1, Math.round((probability + 0.1f)*10)/10);
-                        String newHistory = addHistory(history, formatHistoryRecord(field.getPersonalFieldName(), field.getFieldName().toLowerCase(), probability));
-                        pstmt = con.prepareStatement(
-                            &quot;UPDATE Dictionary SET probability = ? WHERE standard = ? AND synonym = ?&quot;    
-                        );
-                        pstmt.setFloat(1, probability);
-                        pstmt.setString(2, addHistory(history, newHistory));
-                        pstmt.setString(3, field.getFieldName().toLowerCase());
-                        pstmt.setString(4, personalFieldName);
-                        pstmt.executeUpdate();
-                        //System.out.println(&quot;History : &quot; + addHistory(history, formatHistoryRecord(field.getPersonalFieldName(), field.getFieldName().toLowerCase(), probability)));
-                        continue;
-                    }
-                    
-                    // Synonym to synonym matching
-                    pstmt = con.prepareStatement(
-                        &quot;SELECT D1.standard As standard, D1.probability As probability, D1.history As history FROM Dictionary D1, Dictionary D2 WHERE D1.standard = D2.standard AND D1.synonym = ? AND D2.synonym = ?&quot;
-                    );
-                    pstmt.setString(1, field.getFieldName().toLowerCase());
-                    pstmt.setString(2, personalFieldName);
-                    rs = pstmt.executeQuery();
-                    String standard;
-                    String history;
-                    Float probability;
-                    if (rs.next()) {
-                        standard = rs.getString(&quot;standard&quot;);
-                        history = rs.getString(&quot;history&quot;);
-                        probability = rs.getFloat(&quot;probability&quot;);
-                        probability = Math.min(1, probability + 0.1f);
-                    } else {
-                        continue;
-                    }String newHistory = addHistory(history, formatHistoryRecord(personalFieldName, field.getFieldName().toLowerCase(), probability));
-                    pstmt = con.prepareStatement(
-                        &quot;UPDATE Dictionary SET probability = ROUND(LEAST(1, probability + 0.1), 1), history = ? WHERE standard = ? AND (synonym = ? OR synonym = ?)&quot;
-                    ); 
-                    pstmt.setString(1, newHistory);
-                    pstmt.setString(2, standard);
-                    pstmt.setString(3, field.getFieldName().toLowerCase());
-                    pstmt.setString(4, personalFieldName);
-                    System.out.println(&quot;TEST5 - &quot; + pstmt);
-                    //System.out.println(&quot;History : &quot; + addHistory(history, formatHistoryRecord(personalFieldName, field.getFieldName().toLowerCase(), probability)));
-                    pstmt.executeUpdate();
-                    
-                    */
-<span class="nc" id="L534">                    dictionary.addProbability(personalFieldName, field.getFieldName().toLowerCase());</span>
-                }
             }
-<span class="nc" id="L537">        }</span>
-<span class="nc" id="L538">        stamper.close();</span>
-<span class="nc" id="L539">        reader.close();</span>
+<span class="nc" id="L217">        }</span>
 
-<span class="nc" id="L541">    }</span>
-    
-    /*
-    private void getHistory(HttpServletRequest request) throws SQLException {
-        ArrayList&lt;Statistics&gt; statistics = new ArrayList&lt;&gt;();
-        pstmt = con.prepareStatement(
-            &quot;SELECT standard, synonym, history FROM Dictionary ORDER BY standard&quot;
-        );
-        rs = pstmt.executeQuery();
-        StringBuilder str = new StringBuilder();
-        while (rs.next()) {
-            Statistics s = new Statistics();
-            s.setStandard(rs.getString(&quot;standard&quot;));
-            s.setSynonym(rs.getString(&quot;synonym&quot;));
-            if (rs.getString(&quot;history&quot;) != null) {
-                s.setHistory(rs.getString(&quot;history&quot;));
-            } else {
-                s.setHistory(&quot;[]&quot;);
-            }
-            statistics.add(s);
-        }
-        
-        request.getSession().setAttribute(&quot;statistics&quot;, statistics);
-    }
-    */
-    
-    /*
-    private String formatHistoryRecord(float probability) {
-        StringBuilder str = new StringBuilder();
-        str.append(&quot;{\&quot;probability\&quot;: \&quot;&quot;);
-        str.append(probability);
-        str.append(&quot;\&quot;}&quot;);
-        return new String(str);
-    }
-    */
-    
-    /*
-    private String formatHistoryRecord(String word1, String word2, float probability) {
-        StringBuilder str = new StringBuilder();
-        str.append(&quot;{&quot;);
-        str.append(&quot;\&quot;word1\&quot;: &quot;);
-        str.append(&quot;\&quot;&quot;);
-        str.append(word1);
-        str.append(&quot;\&quot;&quot;);
-        str.append(&quot;, &quot;);
-        str.append(&quot;\&quot;word2\&quot;: &quot;);
-        str.append(&quot;\&quot;&quot;);
-        str.append(word2);
-        str.append(&quot;\&quot;&quot;);
-        str.append(&quot;, &quot;);
-        str.append(&quot;\&quot;probability\&quot;: &quot;);
-        str.append(&quot;\&quot;&quot;);
-        str.append(probability);
-        str.append(&quot;\&quot;&quot;);
-        str.append(&quot;}&quot;);
-        return new String(str);
-    }
-        
-    private String addHistory(String oldHistory, String newHistory) {
-        StringBuilder str;
-        if (oldHistory.length() &gt; 2) {
-            // Have record
-            str = new StringBuilder(oldHistory);
-            str.replace(str.length()-1, str.length(), &quot;, &quot; + newHistory);
-            str.append(&quot;]&quot;);
-        } else {
-            // No record
-            str = new StringBuilder();
-            str.append(&quot;[&quot;);
-            str.append(newHistory);
-            str.append(&quot;]&quot;);
-        }
-        return new String(str);
-    }
-    */
+<span class="nc" id="L219">        stamper.close();</span>
+<span class="nc" id="L220">        reader.close();</span>
+
+<span class="nc" id="L222">        session.setAttribute(&quot;filepath&quot;, request.getScheme() + &quot;://&quot; + request.getServerName() + &quot;:&quot; + request.getServerPort() + request.getRequestURI() + &quot;/&quot; + FORM_DIRECTORY + File.separator + user.getUsername() + &quot;.pdf&quot;);</span>
+<span class="nc" id="L223">    }</span>
     
     private void toManagePage(HttpServletRequest request) throws SQLException {
-<span class="nc" id="L618">        AccountManager accountManager = AccountManager.getInstance();</span>
-<span class="nc" id="L619">        FormManager formManager = FormManager.getInstance();</span>
+<span class="nc" id="L226">        AccountManager accountManager = AccountManager.getInstance();</span>
+<span class="nc" id="L227">        FormManager formManager = FormManager.getInstance();</span>
         
-<span class="nc" id="L621">        String action = request.getParameter(&quot;action&quot;);</span>
-<span class="nc bnc" id="L622" title="All 2 branches missed.">        if (action != null) {</span>
-<span class="nc bnc" id="L623" title="All 2 branches missed.">            if (action.equals(&quot;deleteAccount&quot;)) {</span>
-<span class="nc" id="L624">                accountManager.deleteAccount(request.getParameter(&quot;userName&quot;));</span>
-<span class="nc bnc" id="L625" title="All 2 branches missed.">            } else if (action.equals(&quot;deleteForm&quot;)) {</span>
-<span class="nc" id="L626">                formManager.deleteForm(request.getParameter(&quot;formName&quot;));</span>
+<span class="nc" id="L229">        String action = request.getParameter(&quot;action&quot;);</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">        if (action != null) {</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">            if (action.equals(&quot;deleteAccount&quot;)) {</span>
+<span class="nc" id="L232">                accountManager.deleteAccount(request.getParameter(&quot;userName&quot;));</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">            } else if (action.equals(&quot;deleteForm&quot;)) {</span>
+<span class="nc" id="L234">                formManager.deleteForm(request.getParameter(&quot;formName&quot;));</span>
             }
         }
         
-<span class="nc" id="L630">        request.getSession().setAttribute(&quot;userList&quot;, accountManager.getUserList());</span>
-<span class="nc" id="L631">        request.getSession().setAttribute(&quot;formList&quot;, formManager.getFormList());</span>
-<span class="nc" id="L632">    }</span>
+<span class="nc" id="L238">        request.getSession().setAttribute(&quot;userList&quot;, accountManager.getUserList());</span>
+<span class="nc" id="L239">        request.getSession().setAttribute(&quot;formList&quot;, formManager.getFormList());</span>
+<span class="nc" id="L240">    }</span>
+    
+    private void importData(HttpServletRequest request) {
+<span class="nc" id="L243">        Connection con = null;</span>
+<span class="nc" id="L244">        PreparedStatement pstmt = null;</span>
+        
+<span class="nc" id="L246">        HttpSession session = request.getSession();</span>
+        
+        try {
+        // if user have logined
+<span class="nc bnc" id="L250" title="All 2 branches missed.">            if (session.getAttribute(&quot;user&quot;) != null) {</span>
+<span class="nc" id="L251">                User user = (User)session.getAttribute(&quot;user&quot;);</span>
+
+                // Upload file to server
+<span class="nc" id="L254">                FileUploader uploader = FileUploader.getInstance();</span>
+<span class="nc" id="L255">                String directory = getServletContext().getRealPath(IMPORT_DIRECTORY);</span>
+<span class="nc" id="L256">                String fileName = user.getUsername() + &quot;.pdf&quot;;</span>
+<span class="nc" id="L257">                fileName = uploader.upload(request, directory, fileName);</span>
+
+                // Retrieve data and group information from PDF
+<span class="nc" id="L260">                StructureAnalyser structureAnalyser = StructureAnalyser.getInstance();</span>
+<span class="nc" id="L261">                PdfReader reader = new PdfReader(directory + File.separator + fileName); </span>
+<span class="nc" id="L262">                ArrayList&lt;AcroFormField&gt; fieldList = structureAnalyser.analyse(reader);</span>
+<span class="nc" id="L263">                ArrayList&lt;String&gt; groupList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L264">                JSONArray data = new JSONArray();</span>
+<span class="nc" id="L265">                JSONArray group = new JSONArray();</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">                for (AcroFormField field : fieldList) {</span>
+<span class="nc bnc" id="L267" title="All 4 branches missed.">                    if (field.getFieldValue() != null &amp;&amp; !field.getFieldValue().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L268">                        Map map = new HashMap();</span>
+<span class="nc" id="L269">                        map.put(&quot;name&quot;, field.getFieldLabel().toLowerCase());</span>
+<span class="nc" id="L270">                        map.put(&quot;group&quot;, field.getGroup());</span>
+<span class="nc" id="L271">                        map.put(&quot;value&quot;, field.getFieldValue());</span>
+<span class="nc" id="L272">                        map.put(&quot;dataType&quot;, &quot;Text&quot;);</span>
+<span class="nc" id="L273">                        data.put(new JSONObject(map));</span>
+                        
+<span class="nc bnc" id="L275" title="All 2 branches missed.">                        if (!groupList.contains(field.getGroup())) {</span>
+<span class="nc" id="L276">                            groupList.add(field.getGroup());</span>
+<span class="nc" id="L277">                            map.clear();</span>
+<span class="nc" id="L278">                            map.put(&quot;name&quot;, field.getGroup());</span>
+<span class="nc" id="L279">                            group.put(new JSONObject(map));</span>
+                        }
+                    }
+<span class="nc" id="L282">                }</span>
+                
+                // Store data and group to database
+<span class="nc" id="L285">                con = DriverManager.getConnection(DBURL, DBUsername, DBPassword);</span>
+<span class="nc" id="L286">                pstmt = con.prepareStatement(</span>
+                    &quot;UPDATE User SET data = ?, fieldGroup = ? WHERE username = ?&quot;
+                );
+<span class="nc" id="L289">                pstmt.setString(1, data.toString());</span>
+<span class="nc" id="L290">                pstmt.setString(2, group.toString()); </span>
+<span class="nc" id="L291">                pstmt.setString(3, user.getUsername());</span>
+<span class="nc" id="L292">                pstmt.executeUpdate();</span>
+                
+                // Store data to user object
+<span class="nc" id="L295">                user.setGroup(group.toString());</span>
+<span class="nc" id="L296">                user.setData(data.toString());</span>
+            }
+<span class="nc" id="L298">        } catch (Exception e) {</span>
+<span class="nc" id="L299">            e.printStackTrace();</span>
+        } finally {
+<span class="nc" id="L301">            try {</span>
+<span class="nc bnc" id="L302" title="All 6 branches missed.">                if (pstmt != null) {pstmt.close();}</span>
+<span class="nc bnc" id="L303" title="All 6 branches missed.">                if (con != null) {con.close();}</span>
+<span class="nc" id="L304">            } catch (SQLException e) {</span>
+<span class="nc" id="L305">                e.printStackTrace();</span>
+<span class="nc" id="L306">            }</span>
+<span class="nc" id="L307">        }</span>
+<span class="nc" id="L308">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

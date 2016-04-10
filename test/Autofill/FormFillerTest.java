@@ -3,14 +3,28 @@ package Autofill;
 import com.itextpdf.text.Rectangle;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import static org.easymock.EasyMock.expect;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.powermock.api.easymock.PowerMock.mockStatic;
+import static org.powermock.api.easymock.PowerMock.replay;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({DBUtil.class, Dictionary.class})
 public class FormFillerTest {
     
     public FormFillerTest() {
@@ -46,7 +60,32 @@ public class FormFillerTest {
     
     // A > B1 > C1 > D1
     @Test
-    public void testIsGroupMatch1() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public void testIsGroupMatch1() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, SQLException {
+        String synonymSql = "SELECT synonym FROM Dictionary WHERE standard = ? OR standard = ? ORDER BY probability";
+        String standardSql = "SELECT standard FROM Dictionary WHERE synonym = ? ORDER BY probability";
+
+        Connection synonymCon = mock(Connection.class);
+        PreparedStatement synonymPstmt = mock(PreparedStatement.class);
+        ResultSet synonymRs = mock(ResultSet.class);  
+        when(synonymRs.next()).thenReturn(true).thenReturn(false);
+        when(synonymRs.getString("synonym")).thenReturn("word");
+        when(synonymPstmt.executeQuery()).thenReturn(synonymRs);
+        when(synonymCon.prepareStatement(synonymSql)).thenReturn(synonymPstmt);
+        
+        Connection standardCon = mock(Connection.class);
+        PreparedStatement standardPstmt = mock(PreparedStatement.class);
+        ResultSet standardRs = mock(ResultSet.class);  
+        when(standardRs.next()).thenReturn(true);
+        when(standardRs.getString("standard")).thenReturn("word");
+        when(standardPstmt.executeQuery()).thenReturn(standardRs);
+        when(standardCon.prepareStatement(standardSql)).thenReturn(standardPstmt);      
+
+        DBUtil dbUtil = mock(DBUtil.class);
+        when(dbUtil.getDBConnection()).thenReturn(standardCon).thenReturn(synonymCon);
+        mockStatic(DBUtil.class);
+        expect(DBUtil.getInstance()).andReturn(dbUtil).times(2);
+        replay(DBUtil.class);
+        
         FormFiller formfiller = new FormFiller("");
         Method method = FormFiller.class.getDeclaredMethod("isGroupMatch", AcroFormField.class, String.class);
         method.setAccessible(true);
@@ -58,7 +97,32 @@ public class FormFillerTest {
     
     // A > B2 > C2 > D1
     @Test
-    public void testIsGroupMatch2() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public void testIsGroupMatch2() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, SQLException {
+        String synonymSql = "SELECT synonym FROM Dictionary WHERE standard = ? OR standard = ? ORDER BY probability";
+        String standardSql = "SELECT standard FROM Dictionary WHERE synonym = ? ORDER BY probability";
+
+        Connection synonymCon = mock(Connection.class);
+        PreparedStatement synonymPstmt = mock(PreparedStatement.class);
+        ResultSet synonymRs = mock(ResultSet.class);  
+        when(synonymRs.next()).thenReturn(true).thenReturn(false);
+        when(synonymRs.getString("synonym")).thenReturn("word");
+        when(synonymPstmt.executeQuery()).thenReturn(synonymRs);
+        when(synonymCon.prepareStatement(synonymSql)).thenReturn(synonymPstmt);
+        
+        Connection standardCon = mock(Connection.class);
+        PreparedStatement standardPstmt = mock(PreparedStatement.class);
+        ResultSet standardRs = mock(ResultSet.class);  
+        when(standardRs.next()).thenReturn(true);
+        when(standardRs.getString("standard")).thenReturn("word");
+        when(standardPstmt.executeQuery()).thenReturn(standardRs);
+        when(standardCon.prepareStatement(standardSql)).thenReturn(standardPstmt);      
+
+        DBUtil dbUtil = mock(DBUtil.class);
+        when(dbUtil.getDBConnection()).thenReturn(standardCon).thenReturn(synonymCon);
+        mockStatic(DBUtil.class);
+        expect(DBUtil.getInstance()).andReturn(dbUtil).times(2);
+        replay(DBUtil.class);
+        
         FormFiller formfiller = new FormFiller("");
         Method method = FormFiller.class.getDeclaredMethod("isGroupMatch", AcroFormField.class, String.class);
         method.setAccessible(true);
@@ -71,20 +135,68 @@ public class FormFillerTest {
     
     // A > B2 > C2 > D2 > EX
     @Test
-    public void testIsGroupMatch3() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public void testIsGroupMatch3() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, SQLException {
+        String synonymSql = "SELECT synonym FROM Dictionary WHERE standard = ? OR standard = ? ORDER BY probability";
+        String standardSql = "SELECT standard FROM Dictionary WHERE synonym = ? ORDER BY probability";
+
+        Connection synonymCon = mock(Connection.class);
+        PreparedStatement synonymPstmt = mock(PreparedStatement.class);
+        ResultSet synonymRs = mock(ResultSet.class);  
+        when(synonymRs.next()).thenReturn(true).thenReturn(false);
+        when(synonymRs.getString("synonym")).thenReturn("work experience");
+        when(synonymPstmt.executeQuery()).thenReturn(synonymRs);
+        when(synonymCon.prepareStatement(synonymSql)).thenReturn(synonymPstmt);
+        
+        Connection standardCon = mock(Connection.class);
+        PreparedStatement standardPstmt = mock(PreparedStatement.class);
+        ResultSet standardRs = mock(ResultSet.class);  
+        when(standardRs.next()).thenReturn(true);
+        when(standardRs.getString("standard")).thenReturn("work experience");
+        when(standardPstmt.executeQuery()).thenReturn(standardRs);
+        when(standardCon.prepareStatement(standardSql)).thenReturn(standardPstmt);      
+
+        DBUtil dbUtil = mock(DBUtil.class);
+        when(dbUtil.getDBConnection()).thenReturn(standardCon).thenReturn(synonymCon);
+        mockStatic(DBUtil.class);
+        expect(DBUtil.getInstance()).andReturn(dbUtil).times(2);
+        replay(DBUtil.class);
+        
         FormFiller formfiller = new FormFiller("");
         Method method = FormFiller.class.getDeclaredMethod("isGroupMatch", AcroFormField.class, String.class);
         method.setAccessible(true);
         AcroFormField field = new AcroFormField();
-        field.setGroup("work exp");
-        String group = "work experience";
+        field.setGroup("work experience");
+        String group = "work exp";
         boolean isGroupMatch = (boolean)method.invoke(formfiller, field, group);
         assertEquals(true, isGroupMatch);
     }    
     
     // A > B2 > C2 > D2 > EX > F
     @Test
-    public void testIsGroupMatch4() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public void testIsGroupMatch4() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, SQLException {
+        String synonymSql = "SELECT synonym FROM Dictionary WHERE standard = ? OR standard = ? ORDER BY probability";
+        String standardSql = "SELECT standard FROM Dictionary WHERE synonym = ? ORDER BY probability";
+
+        Connection synonymCon = mock(Connection.class);
+        PreparedStatement synonymPstmt = mock(PreparedStatement.class);
+        ResultSet synonymRs = mock(ResultSet.class);  
+        when(synonymRs.next()).thenReturn(false);
+        when(synonymPstmt.executeQuery()).thenReturn(synonymRs);
+        when(synonymCon.prepareStatement(synonymSql)).thenReturn(synonymPstmt);
+        
+        Connection standardCon = mock(Connection.class);
+        PreparedStatement standardPstmt = mock(PreparedStatement.class);
+        ResultSet standardRs = mock(ResultSet.class);  
+        when(standardRs.next()).thenReturn(false);
+        when(standardPstmt.executeQuery()).thenReturn(standardRs);
+        when(standardCon.prepareStatement(standardSql)).thenReturn(standardPstmt);      
+
+        DBUtil dbUtil = mock(DBUtil.class);
+        when(dbUtil.getDBConnection()).thenReturn(standardCon).thenReturn(synonymCon);
+        mockStatic(DBUtil.class);
+        expect(DBUtil.getInstance()).andReturn(dbUtil).times(2);
+        replay(DBUtil.class);
+        
         FormFiller formfiller = new FormFiller("");
         Method method = FormFiller.class.getDeclaredMethod("isGroupMatch", AcroFormField.class, String.class);
         method.setAccessible(true);
@@ -94,32 +206,7 @@ public class FormFillerTest {
         boolean isGroupMatch = (boolean)method.invoke(formfiller, field, group);
         assertEquals(false, isGroupMatch);
     }
-    
-    /*
-    // Is on the right head side of another field
-    @Test
-    public void testIsOnRightTrue() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        FormFiller formfiller = new FormFiller("");
-        Method method = FormFiller.class.getDeclaredMethod("isOnRight", Rectangle.class, Rectangle.class);
-        method.setAccessible(true);
-        Rectangle rectangleRight = new Rectangle(30, 10, 40, 20);
-        Rectangle rectangleLeft = new Rectangle(10, 10, 20, 20);
-        boolean isOnRight = (boolean)method.invoke(formfiller, rectangleRight, rectangleLeft);
-        assertEquals(true, isOnRight);
-    }
-    
-    // Is not on the right head side of another field
-    @Test
-    public void testIsOnRightFalse() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        FormFiller formfiller = new FormFiller("");
-        Method method = FormFiller.class.getDeclaredMethod("isOnRight", Rectangle.class, Rectangle.class);
-        method.setAccessible(true);
-        Rectangle rectangleRight = new Rectangle(30, 10, 40, 20);
-        Rectangle rectangleLeft = new Rectangle(10, 10, 20, 20);
-        boolean isOnRight = (boolean)method.invoke(formfiller, rectangleLeft, rectangleRight);
-        assertEquals(false, isOnRight);
-    }
-    */
+
     // Is on the same line
     @Test
     public void testIsOnSameLineTrue() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -143,80 +230,6 @@ public class FormFillerTest {
         boolean isOnSameLine = (boolean)method.invoke(formfiller, rectangle1, rectangle2);
         assertEquals(false, isOnSameLine);
     }
-    /*
-    // Is separated
-    @Test
-    public void testIsSeperatedTrue() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        FormFiller formfiller = new FormFiller("");
-        Method method = FormFiller.class.getDeclaredMethod("isSeperated", Rectangle.class, Rectangle.class);
-        method.setAccessible(true);
-        Rectangle rectangleUpper = new Rectangle(10, 40, 20, 50);
-        Rectangle rectangleLower = new Rectangle(10, 10, 20, 20);
-        boolean isSeperated = (boolean)method.invoke(formfiller, rectangleLower, rectangleUpper);
-        assertEquals(true, isSeperated);
-    }   
-    
-    // Is not separated
-    @Test
-    public void testIsSeperatedFalse() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        FormFiller formfiller = new FormFiller("");
-        Method method = FormFiller.class.getDeclaredMethod("isSeperated", Rectangle.class, Rectangle.class);
-        method.setAccessible(true);
-        Rectangle rectangleUpper = new Rectangle(10, 20, 20, 30);
-        Rectangle rectangleLower = new Rectangle(10, 10, 20, 20);
-        boolean isSeperated = (boolean)method.invoke(formfiller, rectangleLower, rectangleUpper);
-        assertEquals(false, isSeperated);
-    } 
-    
-    // Is new gruop (ie, TT)
-    @Test
-    public void testIsNewSectionTrue() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        FormFiller formfiller = new FormFiller("");
-        Method method = FormFiller.class.getDeclaredMethod("isNewSection", Rectangle.class, Rectangle.class);
-        method.setAccessible(true);
-        Rectangle rectangle1 = new Rectangle(10, 10, 20, 20);
-        Rectangle rectangle2 = new Rectangle(30, 40, 40, 50);
-        boolean isNewSection = (boolean)method.invoke(formfiller, rectangle1, rectangle2);
-        assertEquals(true, isNewSection);
-    }
-    
-    
-    // Is not new group (ie, FF)
-    @Test
-    public void testIsNewSectionFalse() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        FormFiller formfiller = new FormFiller("");
-        Method method = FormFiller.class.getDeclaredMethod("isNewSection", Rectangle.class, Rectangle.class);
-        method.setAccessible(true);
-        Rectangle rectangle1 = new Rectangle(30, 40, 40, 50);
-        Rectangle rectangle2 = new Rectangle(10, 10, 20, 20);
-        boolean isNewSection = (boolean)method.invoke(formfiller, rectangle1, rectangle2);
-        assertEquals(false, isNewSection);
-    }
-    
-    // Is same line previous field (ie, TT)
-    @Test
-    public void testIsSameLinePreviousFieldTrue() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        FormFiller formfiller = new FormFiller("");
-        Method method = FormFiller.class.getDeclaredMethod("isSameLinePreviousField", Rectangle.class, Rectangle.class);
-        method.setAccessible(true);
-        Rectangle rectangle1 = new Rectangle(30, 10, 40, 20);
-        Rectangle rectangle2 = new Rectangle(10, 10, 20, 20);
-        boolean isSameLinePreviousField = (boolean)method.invoke(formfiller, rectangle1, rectangle2);
-        assertEquals(true, isSameLinePreviousField);
-    }
-    
-    // Is not same line previous field (ie, FF)
-    @Test
-    public void testIsSameLinePreviousFieldFalse() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        FormFiller formfiller = new FormFiller("");
-        Method method = FormFiller.class.getDeclaredMethod("isSameLinePreviousField", Rectangle.class, Rectangle.class);
-        method.setAccessible(true);
-        Rectangle rectangle1 = new Rectangle(10, 10, 20, 20);
-        Rectangle rectangle2 = new Rectangle(30, 10, 40, 20);
-        boolean isSameLinePreviousField = (boolean)method.invoke(formfiller, rectangle1, rectangle2);
-        assertEquals(false, isSameLinePreviousField);
-    }    
-    */
     
     // Decode group name with numbering
     @Test

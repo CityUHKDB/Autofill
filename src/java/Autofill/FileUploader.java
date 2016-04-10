@@ -28,9 +28,9 @@ public class FileUploader {
     }
     
     public String upload(HttpServletRequest request, String directory, String fileName) throws FileUploadException, Exception {
-        // checks if the request actually contains upload file
+        // Checks if upload file exists
         if (ServletFileUpload.isMultipartContent(request)) {
-            // Configure upload setting
+            // Upload setting
             DiskFileItemFactory factory = new DiskFileItemFactory();
             factory.setSizeThreshold(MEMORY_THRESHOLD);
             factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
@@ -38,7 +38,7 @@ public class FileUploader {
             upload.setFileSizeMax(MAX_FILE_SIZE);
             upload.setSizeMax(MAX_REQUEST_SIZE);
 
-            // Creates the directory if it does not exist
+            // Create the directory if not exist
             File uploadDir = new File(directory);
             if (!uploadDir.exists()) {
                 uploadDir.mkdir();
@@ -57,8 +57,6 @@ public class FileUploader {
                         item.write(storeFile);
                     }
                 }
-                FormManager formManager = FormManager.getInstance();
-                formManager.addForm(fileName);
                 return fileName;
             }
         }

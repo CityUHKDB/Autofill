@@ -10,7 +10,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-
 public class StructureAnalyserTest {
     
     public StructureAnalyserTest() {
@@ -153,5 +152,5 @@ public class StructureAnalyserTest {
         assertEquals(false, isSameLinePreviousField);
     }   
     
-    // Test analyse
+
 }
